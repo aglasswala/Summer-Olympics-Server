@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Event = new Schema({
+const eventSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
     numberOfAttendees: Number,
@@ -9,8 +9,10 @@ const Event = new Schema({
     athletes: Array,
     results: String,
     type: String,
-    createdBy: User
+    createdBy: String
 })
+
+const Event = mongoose.model('Event', eventSchema);
 
 module.exports = {
     Event

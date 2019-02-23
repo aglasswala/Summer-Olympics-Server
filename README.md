@@ -24,3 +24,8 @@ Endpoints for API
 /register
     - GET all users
     - POST new user
+
+Todo: 
+    - Finish creating fake database
+    - Start working on making all the functions works
+    - Incorporate Mongo 
