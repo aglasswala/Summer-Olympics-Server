@@ -113,33 +113,48 @@ module.exports = (router) => {
     })
 
     router.post('/tickets', (req, res) => {
-        res.send("Added new ticket").status(200);
+        const { _id, time , cost, eventId, userId } = req.body;
+
+        db.tickets.push({
+            _id: _id,
+            time: time,
+            cost: cost,
+            eventId: eventId,
+            userId: userId,
+        })
+
+        res.send(db.tickets).status(200);
+    })
+
+    router.put('/tickets', (req, res) => {
+        const { _id, time, cost, eventId, userId } = req.body;
+        const index = db.tickets.findIndex((ind => ind._id == _id));
+        db.tickets[index].time = time,
+        db.tickets[index].cost = cost,
+        db.tickets[index].eventId = eventId,
+        db.tickets[index].userID = userId,
+        res.send(db.tickets).status(200);
     })
 
     router.get('/events', (req, res) => {
         res.send(db.events).status(200);
     })
 
-    router.get('/events/view/:eventId', (req, res) => {
+    router.get('/events/:eventId', (req, res) => {
         const { eventId } = req.params;
-
-        res.send("Getting specific event " + eventId).status(200);
+        const index = db.events.findIndex((ind => ind._id === eventId));Y
+        res.send(db.events[index]).status(200);
     })
 
-    router.post('/events/create', (req, res) => {
+    router.post('/events', (req, res) => {
         res.send("Creating new event").status(200);
     })
 
-    router.get('/signin', (req, res) => {
+    router.get('/users', (req, res) => {
         res.send(db.users).status(200);
     })
 
-    router.get('/register', (req, res) => {
+    router.post('/users', (req, res) => {
         res.send(db.users).status(200);
     })
-
-    router.post('/register', (req, res) => {
-        res.send("Adding new registered User").status(200);
-    })
-
 };
