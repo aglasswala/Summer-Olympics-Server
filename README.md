@@ -3,6 +3,7 @@ Project Plan
 Endpoints for API
 
 /tickets
+    - GET tickets
     - POST new ticket
     - PUT Tickets 
     - Delete Tickets 

@@ -11,7 +11,9 @@ function startServer(server) {
     const { MONGODB_USER, MONGODB_PASSWORD, APP_PORT } = process.env
     mongoose.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@summerolympics-0tpzz.mongodb.net/test?retryWrites=true`, {
         useNewUrlParser: true
-    })
+    }).catch((err) => {
+        console.log(err)
+    });
 
     mongoose.connection.once('open', function () {
         console.log("MongoDB is connected")
@@ -25,6 +27,7 @@ async function init() {
     const app = express();
 
     app.use(bodyParser.json());
+    
     router(app);
     startServer(app);
 }
