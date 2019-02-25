@@ -23,15 +23,3 @@ module.exports = {
         })
     }
 }
-
-// {
-//     _id: "user1",
-//         firstName: "Dill",
-//             lastName: "Glasswala",
-//                 address: "345 River Rd",
-//                     email: "aglasswala@gmail.com",
-//                         age: 20,
-//                             phoneNumber: "2012148385",
-//                                 userType: "public",
-//                                     tickets: ["ticket1", "ticket2"]
-// },
