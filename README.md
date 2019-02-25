@@ -8,7 +8,10 @@ Endpoints for API
     - PUT Tickets 
     - Delete Tickets 
 
-/events/view 
+/users/{id}
+    - GET all users
+
+/events
     - Get (show) all events
 
 /events/{id}

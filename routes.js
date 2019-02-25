@@ -114,7 +114,6 @@ module.exports = (router) => {
 
     router.post('/tickets', (req, res) => {
         const { _id, time , cost, eventId, userId } = req.body;
-
         db.tickets.push({
             _id: _id,
             time: time,
@@ -142,7 +141,7 @@ module.exports = (router) => {
 
     router.get('/events/:eventId', (req, res) => {
         const { eventId } = req.params;
-        const index = db.events.findIndex((ind => ind._id === eventId));Y
+        const index = db.events.findIndex((ind => ind._id === eventId));
         res.send(db.events[index]).status(200);
     })
 
