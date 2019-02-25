@@ -1,4 +1,5 @@
 const ticketController = require('./controllers/ticketController');
+const userController = require('./controllers/userController')
 
 module.exports = (router) => {
 
@@ -32,11 +33,7 @@ module.exports = (router) => {
         res.send("Creating new event").status(200);
     })
 
-    router.get('/users', (req, res) => {
-        res.send(db.users).status(200);
-    })
+    router.get('/users', userController.getUser)
 
-    router.post('/users', (req, res) => {
-        res.send(db.users).status(200);
-    })
+    router.post('/users', userController.addUser)
 };

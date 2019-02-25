@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 const router = require('./routes');
 
@@ -27,7 +28,8 @@ async function init() {
     const app = express();
 
     app.use(bodyParser.json());
-    
+    app.use(cors());
+
     router(app);
     startServer(app);
 }
