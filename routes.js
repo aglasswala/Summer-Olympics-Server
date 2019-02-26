@@ -1,39 +1,38 @@
 const ticketController = require('./controllers/ticketController');
 const userController = require('./controllers/userController')
+const eventController = require('./controllers/eventController')
 
 module.exports = (router) => {
 
-    router.get('/', (req, res) => res.status(200).send("HELLO WORLD"));
+    // This will load when the front page loads
+    router.get('/', (req, res) => res.status(200).send("OH YEAH"));
 
+    // Show all the tickets 
     router.get('/tickets', ticketController.getTicket)
 
+    // Get ticket by userId
+    router.get('/tickets/:userId', ticketController.getTicketById)
+
+    // When a user buys a ticket, { userId, eventId, cost }
     router.post('/tickets', ticketController.buyTicket)
 
-    router.put('/tickets', (req, res) => {
-        const { _id, time, cost, eventId, userId } = req.body;
-        const index = db.tickets.findIndex((obj => obj._id == _id));
-        db.tickets[index].time = time,
-            db.tickets[index].cost = cost,
-            db.tickets[index].eventId = eventId,
-            db.tickets[index].userID = userId,
-            res.send(db.tickets).status(200);
-    })
+    // Update tickets, if venue or date have been changed
+    router.put('/tickets', ticketController.updateTicket)
 
-    router.get('/events', (req, res) => {
-        res.send(db.events).status(200);
-    })
+    // Show all events going on 
+    router.get('/events', eventController.getAllEvents)
 
-    router.get('/events/:eventId', (req, res) => {
-        const { eventId } = req.params;
-        const index = db.events.findIndex((ind => ind._id === eventId));
-        res.send(db.events[index]).status(200);
-    })
+    // Get events by ID
+    router.get('/events/:eventId', eventController.getEvent)
 
+    // Create new Event, employees or athletes only 
     router.post('/events', (req, res) => {
         res.send("Creating new event").status(200);
     })
 
+    // Get all users 
     router.get('/users', userController.getUser)
 
+    // Register new user
     router.post('/users', userController.addUser)
 };

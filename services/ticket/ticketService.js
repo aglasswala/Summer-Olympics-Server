@@ -56,7 +56,7 @@ let db = {
             time: new Date(),
             cost: 30,
             eventId: "event1",
-            userID: "user1"
+            userId: "user1"
         },
         {
             _id: "ticket2",
@@ -105,12 +105,26 @@ let db = {
 }
 
 module.exports = {
-    buyUserTicket: (userId, eventId) => {
+    getTicket: () => {
+        return new Promise((resolve, reject) => {
+            return resolve(db.tickets)
+        })
+    },
+    getTicketById: (userId) => {
+        return new Promise((resolve, reject) => {
+            const filteredArray = db.tickets.filter((object) => {
+                return object.userId === userId
+            }) 
+            
+            return resolve(filteredArray)
+        })
+    },
+    buyUserTicket: (userId, eventId, cost) => {
         return new Promise((resolve, reject) => {
             db.tickets.push({
                 _id: mongoose.Types.ObjectId(),
                 time: new Date(),
-                cost: 30,
+                cost: cost,
                 eventId: eventId,
                 userID: userId
             })
@@ -118,9 +132,15 @@ module.exports = {
             return resolve(db.tickets)
         })
     },
-    getTicket: () => {
+    updateTicket: (_id, time, cost, eventId, userId) => {
         return new Promise((resolve, reject) => {
-            return resolve(db.tickets)
+            const index = db.tickets.findIndex((obj => obj._id == _id));
+            db.tickets[index].time = time,
+            db.tickets[index].cost = cost,
+            db.tickets[index].eventId = eventId,
+            db.tickets[index].userID = userId
+            
+            return resolve(db.tickets);
         })
     },
     db
