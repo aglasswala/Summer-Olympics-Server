@@ -10,8 +10,8 @@ module.exports = (router) => {
     // Show all the tickets 
     router.get('/tickets', ticketController.getTicket)
 
-    // Get ticket by userId
-    router.get('/tickets/:userId', ticketController.getTicketById)
+    // Get ticket by userId 
+    // router.get('/tickets/userId', ticketController.getTicketById)
 
     // When a user buys a ticket, { userId, eventId, cost }
     router.post('/tickets', ticketController.buyTicket)
@@ -32,6 +32,14 @@ module.exports = (router) => {
 
     // Get all users 
     router.get('/users', userController.getUser)
+
+    router.get('/user/:userId', (req, res) => {
+        res.status(200).send("this is a better endpoint");
+    })
+
+    router.get('/user/:userId/tickets', (req, res) => {
+        res.status(200).send("this is a better endpoint");
+    })
 
     // Register new user
     router.post('/users', userController.addUser)

@@ -78,8 +78,7 @@ let db = {
             cost: 0,
             eventId: "event2",
             userId: "user3"
-        },
-
+        }
     ],
     events: [
         {
@@ -101,6 +100,9 @@ let db = {
             type: "competition",
             createdBy: "user3"
         }
+    ],
+    notifcations: [
+        
     ]
 }
 
