@@ -27,6 +27,10 @@ function startServer(server) {
 async function init() {
     const app = express();
 
+    mongoose.set('useNewUrlParser', true);
+    mongoose.set('useFindAndModify', false);
+    mongoose.set('useCreateIndex', true);
+
     app.use(bodyParser.json());
     app.use(cors());
 

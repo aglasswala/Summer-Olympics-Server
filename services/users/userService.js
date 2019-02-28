@@ -1,15 +1,23 @@
-const ticketService = require('../ticket/ticketService')
 const mongoose = require('mongoose')
+const User = require('../../models/users');
 
 module.exports = {
     getUser: () => {
         return new Promise((resolve, reject) => {
-            return resolve(ticketService.db.users)
+            User
+                .find()
+                .exec()
+                .then(docs => {
+                    return resolve(docs)
+                })
+                .catch(err => {
+                    return reject(err);
+                })
         })
     },
     addUser: (firstName, lastName, email, phoneNumber, age) => {
         return new Promise((resolve, reject) => {
-            ticketService.db.users.push({
+            const newUser = new User({
                 _id: mongoose.Types.ObjectId(),
                 firstName: firstName,
                 lastName: lastName,
@@ -19,7 +27,15 @@ module.exports = {
                 userType: "public",
                 tickets: []
             })
-            return resolve(ticketService.db.users)
+            newUser
+                .save()
+                .then(result => {
+                    return resolve(result)
+                })
+                .catch(err => {
+                    return reject(err)
+                })
+
         })
     }
 }
