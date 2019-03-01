@@ -102,7 +102,7 @@ let db = {
         }
     ],
     notifcations: [
-        
+
     ]
 }
 
@@ -112,15 +112,15 @@ module.exports = {
             return resolve(db.tickets)
         })
     },
-    getTicketById: (userId) => {
-        return new Promise((resolve, reject) => {
-            const filteredArray = db.tickets.filter((object) => {
-                return object.userId === userId
-            }) 
-            
-            return resolve(filteredArray)
-        })
-    },
+    // getTicketById: (userId) => {
+    //     return new Promise((resolve, reject) => {
+    //         const filteredArray = db.tickets.filter((object) => {
+    //             return object.userId === userId
+    //         }) 
+
+    //         return resolve(filteredArray)
+    //     })
+    // },
     buyUserTicket: (userId, eventId, cost) => {
         return new Promise((resolve, reject) => {
             db.tickets.push({
@@ -138,10 +138,10 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const index = db.tickets.findIndex((obj => obj._id == _id));
             db.tickets[index].time = time,
-            db.tickets[index].cost = cost,
-            db.tickets[index].eventId = eventId,
-            db.tickets[index].userID = userId
-            
+                db.tickets[index].cost = cost,
+                db.tickets[index].eventId = eventId,
+                db.tickets[index].userID = userId
+
             return resolve(db.tickets);
         })
     },

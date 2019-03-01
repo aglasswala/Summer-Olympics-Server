@@ -7,40 +7,33 @@ module.exports = (router) => {
     // This will load when the front page loads
     router.get('/', (req, res) => res.status(200).send("OH YEAH"));
 
-    // Show all the tickets 
-    router.get('/tickets', ticketController.getTicket)
+    // TICKETS
+    router.get('/tickets', ticketController.getTicket) // GET all tickets
 
-    // Get ticket by userId 
-    // router.get('/tickets/userId', ticketController.getTicketById)
+    router.post('/tickets', ticketController.buyTicket) // POST new Ticket
 
-    // When a user buys a ticket, { userId, eventId, cost }
-    router.post('/tickets', ticketController.buyTicket)
+    router.put('/tickets', ticketController.updateTicket) // Update Ticket 
 
-    // Update tickets, if venue or date have been changed
-    router.put('/tickets', ticketController.updateTicket)
+    // EVENTS
+    router.get('/events', eventController.getAllEvents) // GET all events
 
-    // Show all events going on 
-    router.get('/events', eventController.getAllEvents)
+    router.get('/events/:eventId', eventController.getEventById) // GET events by Id
 
-    // Get events by ID
-    router.get('/events/:eventId', eventController.getEvent)
+    router.post('/events', eventController.createEvent) // POST new Event
 
-    // Create new Event, employees or athletes only 
-    router.post('/events', (req, res) => {
-        res.send("Creating new event").status(200);
-    })
+    //router.delete('/events/:eventId', eventController.deleteEvent) // Delete event
 
-    // Get all users 
-    router.get('/users', userController.getUser)
+    // USERS
+    router.get('/users', userController.getUser) // GET all users
 
     router.get('/user/:userId', (req, res) => {
-        res.status(200).send("this is a better endpoint");
+        res.status(200).send("this is a better endpoint"); // GET user by ID
     })
 
     router.get('/user/:userId/tickets', (req, res) => {
-        res.status(200).send("this is a better endpoint");
+        res.status(200).send("this is a better endpoint"); // GET user tickets by ID
     })
 
-    // Register new user
-    router.post('/users', userController.addUser)
+    router.post('/users', userController.addUser) // POST new User
+    router.delete('/users/:userId', userController.deleteUser) // Deletes User
 };

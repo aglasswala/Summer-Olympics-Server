@@ -37,5 +37,19 @@ module.exports = {
                 })
 
         })
+    },
+    deleteUser: (userId) => {
+        return new Promise((resolve, reject) => {
+            User
+                .find({ _id: userId })
+                .remove()
+                .exec()
+                .then(result => {
+                    return resolve(result)
+                })
+                .catch(err => {
+                    return reject(err);
+                })
+        })
     }
 }

@@ -5,7 +5,6 @@ module.exports = {
     getUser: (req, res, next) => {
         return userService.getUser()
             .then(response => {
-                console.log(response)
                 return res.status(200).send({
                     count: response.length,
                     users: response.map(doc => {
@@ -16,6 +15,7 @@ module.exports = {
                             email: doc.email,
                             phoneNumber: doc.phoneNumber,
                             userType: doc.userType
+
                         }
                     })
 
@@ -32,6 +32,16 @@ module.exports = {
                 return res.status(200).send(response)
             })
             .catch(next);
+    },
+    deleteUser: (req, res, next) => {
+        const { userId } = req.params
+        return userService.deleteUser(userId)
+            .then(result => {
+                return res.status(200).send(result)
+            })
+            .catch(err => {
+                return res.status(500).send(err);
+            })
     }
 
 }

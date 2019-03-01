@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validateEmail = require('../validators/validators')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
