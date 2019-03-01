@@ -15,7 +15,6 @@ module.exports = {
                             email: doc.email,
                             phoneNumber: doc.phoneNumber,
                             userType: doc.userType
-
                         }
                     })
 
