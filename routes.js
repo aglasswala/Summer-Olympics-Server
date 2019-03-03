@@ -24,7 +24,10 @@ module.exports = (router) => {
     //router.delete('/events/:eventId', eventController.deleteEvent) // Delete event
 
     // USERS
-    router.get('/users', userController.getUser) // GET all users
+    router.post('/login', (req, res) => {
+        console.log(req.body)
+        res.status(200).send("OH YEAH")
+    }) // GET all users
 
     router.get('/user/:userId', (req, res) => {
         res.status(200).send("this is a better endpoint"); // GET user by ID

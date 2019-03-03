@@ -1,19 +1,13 @@
 const mongoose = require('mongoose')
 const User = require('../../models/users');
+const ticketService = require('../ticket/ticketService')
 
 module.exports = {
     getUser: () => {
         return new Promise((resolve, reject) => {
-            User
-                .find()
-                .exec()
-                .then(docs => {
-                    return resolve(docs)
-                })
-                .catch(err => {
-                    return reject(err);
-                })
-        })
+            return resolve(ticketService.db.users)
+        }).catch(err => reject(err))
+        
     },
     addUser: (firstName, lastName, email, phoneNumber, age) => {
         return new Promise((resolve, reject) => {

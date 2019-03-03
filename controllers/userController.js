@@ -2,27 +2,13 @@ const userService = require('../services/users/userService')
 
 
 module.exports = {
-    getUser: (req, res, next) => {
-        return userService.getUser()
-            .then(response => {
-                return res.status(200).send({
-                    count: response.length,
-                    users: response.map(doc => {
-                        return {
-                            _id: doc._id,
-                            firstName: doc.firstName,
-                            lastName: doc.lastName,
-                            email: doc.email,
-                            phoneNumber: doc.phoneNumber,
-                            userType: doc.userType
-                        }
-                    })
-
-                })
-            })
-            .catch(err => {
-                return res.status(500).send(err);
-            });
+    loginUser: (req, res, next) => {
+        console.log(req.body)
+        return res.status(200).send("SDF")
+        
+        // return userService.getUser()
+        //     .then(response => res.status(200).send(response))
+        //     .catch(err => res.status(500).send(err));
     },
     addUser: (req, res, next) => {
         const { firstName, lastName, email, phoneNumber, age } = req.body

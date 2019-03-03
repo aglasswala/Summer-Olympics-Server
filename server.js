@@ -9,19 +9,19 @@ const router = require('./routes');
 
 function startServer(server) {
 
-    const { MONGODB_USER, MONGODB_PASSWORD, APP_PORT } = process.env
-    mongoose.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@summerolympics-0tpzz.mongodb.net/test?retryWrites=true`, {
-        useNewUrlParser: true
-    }).catch((err) => {
-        console.log(err)
-    });
+     const { MONGODB_USER, MONGODB_PASSWORD, APP_PORT } = process.env
+    // mongoose.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@summerolympics-0tpzz.mongodb.net/test?retryWrites=true`, {
+    //     useNewUrlParser: true
+    // }).catch((err) => {
+    //     console.log(err)
+    // });
 
-    mongoose.connection.once('open', function () {
-        console.log("MongoDB is connected")
+    // mongoose.connection.once('open', function () {
+    //     console.log("MongoDB is connected")
         server.listen(APP_PORT || 3000, () => {
             console.log(`Server is listening on ${APP_PORT}`)
         })
-    })
+    // })
 }
 
 async function init() {
