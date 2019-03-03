@@ -3,11 +3,14 @@ const User = require('../../models/users');
 const ticketService = require('../ticket/ticketService')
 
 module.exports = {
-    getUser: () => {
+    getUser: (email, password) => {
         return new Promise((resolve, reject) => {
-            return resolve(ticketService.db.users)
-        }).catch(err => reject(err))
-        
+            const user = ticketService.db.users.find(user => user.email === email && user.password === password)
+            return resolve(user);
+        })
+        .catch(err => {
+            return reject(err)
+        })
     },
     addUser: (firstName, lastName, email, phoneNumber, age) => {
         return new Promise((resolve, reject) => {

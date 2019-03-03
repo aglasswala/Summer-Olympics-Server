@@ -1,13 +1,26 @@
 const userService = require('../services/users/userService')
+const jwt = require('jsonwebtoken')
 
 
 module.exports = {
     loginUser: (req, res, next) => {
         const { email, password } = req.body
-        v
-        return userService.getUser()
-            .then(response => res.status(200).send(response))
-            .catch(err => res.status(500).send(err));
+        const { SECURE_KEY_JWT } = process.env
+        // Validate EMAIL and PASSWORD
+        return userService.getUser(email, password)
+            .then(user => {
+                if(user) {
+                    const userToken = jwt.sign(user, SECURE_KEY_JWT)
+                    res.cookie('userSession', userToken, { maxAge: 1000 * 60 * 60 });
+                    return res.status(200).send({
+                        response: true
+                    });
+                }
+                return res.status(501).send({
+                    resp: "incorrect login"
+                })
+            })
+            
     },
     addUser: (req, res, next) => {
         const { firstName, lastName, email, phoneNumber, age } = req.body
