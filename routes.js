@@ -26,7 +26,7 @@ module.exports = (router) => {
     // USERS
     router.post('/login', (req, res) => {
         console.log(req.body)
-        res.status(200).send("OH YEAH")
+        res.status(200).send({ resp: "OH YEAH" })
     }) // GET all users
 
     router.get('/user/:userId', (req, res) => {
