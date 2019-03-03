@@ -3,12 +3,11 @@ const userService = require('../services/users/userService')
 
 module.exports = {
     loginUser: (req, res, next) => {
-        console.log(req.body)
-        return res.status(200).send("SDF")
-        
-        // return userService.getUser()
-        //     .then(response => res.status(200).send(response))
-        //     .catch(err => res.status(500).send(err));
+        const { email, password } = req.body
+        v
+        return userService.getUser()
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(500).send(err));
     },
     addUser: (req, res, next) => {
         const { firstName, lastName, email, phoneNumber, age } = req.body
