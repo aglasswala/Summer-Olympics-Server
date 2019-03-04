@@ -12,13 +12,11 @@ module.exports = {
                 if(user) {
                     const userToken = jwt.sign(user, SECURE_KEY_JWT)
                     res.cookie('userSession', userToken, { maxAge: 1000 * 60 * 60 });
-                    return res.status(200).send({
+                    return res.status(200).json({
                         response: true
                     });
                 }
-                return res.status(501).send({
-                    resp: "incorrect login"
-                })
+                return res.status(404)
             })
             
     },
