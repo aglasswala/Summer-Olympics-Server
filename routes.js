@@ -26,8 +26,8 @@ module.exports = (router) => {
     // USERS
     router.post('/login', userController.loginUser) // Logs in user
 
-    router.get('/user/:userId', (req, res) => {
-        res.status(200).send("this is a better endpoint"); // GET user by ID
+    router.get('/getUser/', (req, res) => {
+        res.send(req.user)
     })
 
     router.get('/user/:userId/tickets', (req, res) => {
