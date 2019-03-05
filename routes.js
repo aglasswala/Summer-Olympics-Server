@@ -2,21 +2,6 @@ const ticketController = require('./controllers/ticketController');
 const userController = require('./controllers/userController')
 const eventController = require('./controllers/eventController')
 
-const checkToken = (req, res, next) => {
-    const header = req.headers['authorization'];
-
-    if(typeof header !== 'undefined') {
-        const bearer = header.split(' ');
-        const token = bearer[1];
-
-        req.token = token;
-        next();
-    } else {
-        //If header is undefined return Forbidden (403)
-        res.sendStatus(403)
-    }
-}
-
 module.exports = (router) => {
 
     // This will load when the front page loads
@@ -41,7 +26,7 @@ module.exports = (router) => {
     // USERS
     router.post('/login', userController.loginUser) // Logs in user
 
-    // router.get('/getUser', userController.getUser)
+    router.get('/getUser', userController.getUser)
 
     router.get('/user/:userId/tickets', (req, res) => {
         res.status(200).send("this is a better endpoint"); // GET user tickets by ID

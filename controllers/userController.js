@@ -35,7 +35,7 @@ module.exports = {
                 console.log("SUCCESS")
             }
         })
-        .catch(err => console.log(err))
+        
     },
     deleteUser: (req, res, next) => {
         const { userId } = req.params
