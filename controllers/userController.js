@@ -1,4 +1,5 @@
 const userService = require('../services/users/userService')
+
 const jwt = require('jsonwebtoken')
 
 
@@ -10,21 +11,31 @@ module.exports = {
         return userService.getUser(email, password)
             .then(user => {
                 if(user) {
-                    const userToken = jwt.sign(user, SECURE_KEY_JWT)
-                    res.cookie('userSession', userToken, { maxAge: 1000 * 60 * 60 });
+                    const userToken = jwt.sign({
+                        expiresIn: '1hr',
+                        data: user
+                    }, SECURE_KEY_JWT)
                     return res.status(200).json(userToken);
                 }
                 return res.status(404)
             })
+            .catch("didn't work")
             
     },
-    addUser: (req, res, next) => {
-        const { firstName, lastName, email, phoneNumber, age } = req.body
-        return userService.addUser(firstName, lastName, email, phoneNumber, age)
-            .then(response => {
-                return res.status(200).send(response)
-            })
-            .catch(next);
+    getUser: (req, res, next) => {
+        const { SECURE_KEY_JWT } = process.env
+        jwt.verify(req.token, 'SECURE_KEY_JWT', (err, data) => {
+            if(err) {
+                return res.sendStatus(403);
+            } else {
+                return res.status(200).json({
+                    message: "Sucessful Login",
+                    data
+                })
+                console.log("SUCCESS")
+            }
+        })
+        .catch(err => console.log(err))
     },
     deleteUser: (req, res, next) => {
         const { userId } = req.params
