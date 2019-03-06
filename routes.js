@@ -22,16 +22,10 @@ module.exports = (router) => {
 
     router.post('/events', eventController.createEvent) // POST new Event
 
-    //router.delete('/events/:eventId', eventController.deleteEvent) // Delete event
-
     // USERS
     router.post('/login', userController.loginUser) // Logs in user
 
-    // router.get('/getUser', verifyToken, (req, res) => {
-    //     return res.status(200).sendd({
-    //         resp: req.userId
-    //     })
-    // })
+    router.get('/getUser', userController.getUser)
 
     router.get('/user/:userId/tickets', (req, res) => {
         res.status(200).send("this is a better endpoint"); // GET user tickets by ID

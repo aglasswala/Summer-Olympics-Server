@@ -15,8 +15,7 @@ module.exports = {
                         expiresIn: '1hr'
                     })
                     return res.status(200).send({
-                        auth: true,
-                        token: userToken,
+                        userToken
                     });
                 }
                 return res.status(404)
@@ -25,9 +24,20 @@ module.exports = {
             
     },
     getUser: (req, res, next) => {
-        return userService.getUserById(token) // over here
-            .then(user => res.status(200).send(user))
-            .catch(err => console.log(err))
+        const { SECURE_KEY_JWT } = process.env
+        const decoded = jwt.verify(req.headers['x-access-token'], SECURE_KEY_JWT);
+        return userService.getUserById(decoded.id)
+            .then(response => {
+                res.status(200).send(response)
+            })
+
+        return res.status(200).send({
+            resp: "OK"
+        })
+
+        // return userService.getUserById(token) // over here
+        //     .then(user => res.status(200).send(user))
+        //     .catch(err => console.log(err))
     },
     deleteUser: (req, res, next) => {
         const { userId } = req.params

@@ -12,6 +12,18 @@ module.exports = {
             return reject(err)
         })
     },
+    getUserById: (userId) => {
+        return new Promise((resolve, reject) => {
+            const user = ticketService.db.users.find(user => user._id === userId)
+            if(!user) {
+                return reject()
+            }
+            return resolve(user);
+        })
+        .catch(err => {
+            return console.log(err)
+        })
+    },
     addUser: (firstName, lastName, email, phoneNumber, age) => {
         return new Promise((resolve, reject) => {
             const newUser = new User({
