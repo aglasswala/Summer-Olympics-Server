@@ -1,7 +1,6 @@
 const ticketController = require('./controllers/ticketController');
 const userController = require('./controllers/userController')
 const eventController = require('./controllers/eventController')
-const verifyToken = require('./helpers/checkToken')
 
 module.exports = (router) => {
 
@@ -25,7 +24,7 @@ module.exports = (router) => {
     // USERS
     router.post('/login', userController.loginUser) // Logs in user
 
-    router.get('/getUser', userController.getUser)
+    router.get('/getUserById', userController.getUserById)
 
     router.get('/user/:userId/tickets', (req, res) => {
         res.status(200).send("this is a better endpoint"); // GET user tickets by ID

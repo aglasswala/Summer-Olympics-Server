@@ -1,43 +1,42 @@
 const userService = require('../services/users/userService')
-
+const auth = require('../auth/auth')
 const jwt = require('jsonwebtoken')
 
 
 module.exports = {
     loginUser: (req, res, next) => {
         const { email, password } = req.body
-        const { SECURE_KEY_JWT } = process.env
         // Validate EMAIL and PASSWORD
         return userService.getUser(email, password)
-            .then(user => {
-                if(user) {
-                    const userToken = jwt.sign({ id: user._id }, SECURE_KEY_JWT, {
-                        expiresIn: '1hr'
-                    })
-                    return res.status(200).send({
-                        userToken
-                    });
+            .then(user => auth.createJwt(user))
+            .then(data => {
+                if(!data) {
+                    res.status(404)
                 }
-                return res.status(404)
+                return res.status(200).send(data)
             })
             .catch(err => console.log(err));
             
     },
-    getUser: (req, res, next) => {
-        const { SECURE_KEY_JWT } = process.env
-        const decoded = jwt.verify(req.headers['x-access-token'], SECURE_KEY_JWT);
+    getUserById: (req, res, next) => {
+        const decoded = auth.verifyJwt(req.headers['x-access-token']);
         return userService.getUserById(decoded.id)
             .then(response => {
-                res.status(200).send(response)
+                return res.status(200).send({
+                    firstName: response.firstName,
+                    lastName: response.lastName,
+                    email: response.email,
+                    age: response.age,
+                    street: response.street,
+                    city: response.city,
+                    state: response.state,
+                    zip: response.zip,
+                    phoneNumber: response.phoneNumber,
+                    tickets: response.tickets,
+                    userType: response.userType
+                })
             })
-
-        return res.status(200).send({
-            resp: "OK"
-        })
-
-        // return userService.getUserById(token) // over here
-        //     .then(user => res.status(200).send(user))
-        //     .catch(err => console.log(err))
+            .catch(err => res.status(404).send(err))
     },
     deleteUser: (req, res, next) => {
         const { userId } = req.params
