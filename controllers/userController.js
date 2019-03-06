@@ -25,7 +25,7 @@ module.exports = {
             
     },
     getUser: (req, res, next) => {
-        return userService.getUserById(token)
+        return userService.getUserById(token) // over here
             .then(user => res.status(200).send(user))
             .catch(err => console.log(err))
     },
