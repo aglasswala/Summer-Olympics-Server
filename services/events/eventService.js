@@ -1,6 +1,7 @@
 const ticketService = require('../ticket/ticketService')
 const mongoose = require('mongoose')
 const Event = require('../../models/events')
+const uuidv1 = require('uuid/v1');
 
 module.exports = {
     getAllEvents: () => {
@@ -16,8 +17,8 @@ module.exports = {
     },
     createEvent: (nameOfEvent, time, athletes, type, userId) => {
         return new Promise((resolve, reject) => {
-            const newEvent = new Event({
-                _id: mongoose.Types.ObjectId(),
+            const newEvent = {
+                _id: uuid,
                 nameOfEvent: nameOfEvent,
                 time: time,
                 registeredTickets: [],
@@ -26,15 +27,10 @@ module.exports = {
                 results: [],
                 type: type,
                 createdBy: userId
-            })
-            newEvent
-                .save()
-                .then(result => {
-                    return resolve(result)
-                })
-                .catch(err => {
-                    return reject(err);
-                })
+            }
+            ticketService.db.events.push(newEvent);
+            return resolve(newEvent); 
         })
+            
     }
 }
