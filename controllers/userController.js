@@ -39,9 +39,31 @@ module.exports = {
             .catch(err => res.status(404).send(err))
     },
     registerUser: (req, res, next) => {
-        const { firstName, lastName, email, password } = req.body
+        const { 
+            firstName, 
+            lastName, 
+            street,
+            city,
+            state,
+            zip,
+            email, 
+            password,
+            age,
+            phoneNumber,
+        } = req.body
         // TODO VALIDATE
-        return userService.registerUser(firstName, lastName, email, password)
+        return userService.registerUser(
+            firstName, 
+            lastName, 
+            street,
+            city,
+            state,
+            zip,
+            email, 
+            password,
+            age,
+            phoneNumber,
+        )
             .then(result => res.status(200).send(result))
             .catch(err => console.log(err))
     }

@@ -1,6 +1,7 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const User = require('../../models/users');
-const ticketService = require('../ticket/ticketService')
+const ticketService = require('../ticket/ticketService');
+const uuid = require('uuid/v1');
 
 module.exports = {
     getUser: (email, password) => {
@@ -24,41 +25,27 @@ module.exports = {
             return console.log(err)
         })
     },
-    addUser: (firstName, lastName, email, phoneNumber, age) => {
+    registerUser: (firstName, lastName, street, city, state, zip, email, password, age, phoneNumber) => {
         return new Promise((resolve, reject) => {
-            const newUser = new User({
-                _id: mongoose.Types.ObjectId(),
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                age: age,
-                phoneNumber: phoneNumber,
+            const newUser = {
+                _id: uuid(),
+                firstName,
+                lastName,
+                street,
+                city,
+                state,
+                zip,
+                email,
+                password,
+                age,
+                phoneNumber,
                 userType: "public",
                 tickets: []
-            })
-            newUser
-                .save()
-                .then(result => {
-                    return resolve(result)
-                })
-                .catch(err => {
-                    return reject(err)
-                })
+            }
+            const user = ticketService.db.users.push(newUser)
+            console.log(user)
+            resolve();
 
-        })
-    },
-    deleteUser: (userId) => {
-        return new Promise((resolve, reject) => {
-            User
-                .find({ _id: userId })
-                .remove()
-                .exec()
-                .then(result => {
-                    return resolve(result)
-                })
-                .catch(err => {
-                    return reject(err);
-                })
         })
     }
 }
