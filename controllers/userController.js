@@ -38,14 +38,11 @@ module.exports = {
             })
             .catch(err => res.status(404).send(err))
     },
-    deleteUser: (req, res, next) => {
-        const { userId } = req.params
-        return userService.deleteUser(userId)
-            .then(result => {
-                return res.status(200).send(result)
-            })
-            .catch(err => {
-                return res.status(500).send(err);
-            })
+    registerUser: (req, res, next) => {
+        const { firstName, lastName, email, password } = req.body
+        // TODO VALIDATE
+        return userService.registerUser(firstName, lastName, email, password)
+            .then(result => res.status(200).send(result))
+            .catch(err => console.log(err))
     }
 }

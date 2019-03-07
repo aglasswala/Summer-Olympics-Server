@@ -27,11 +27,7 @@ module.exports = (router) => {
 
     // Register information
 
-    router.post('/register', (req, res) => {
-        const { firstName } = req.body
-        console.log(firstName)
-        res.status(200).json(firstName)
-    })
+    router.post('/register', userController.registerUser)
 
     // router.get('/user/:userId/tickets', (req, res) => {
     //     res.status(200).send("this is a better endpoint"); // GET user tickets by ID
