@@ -15,7 +15,7 @@ module.exports = {
                 }
                 return res.status(200).send(data)
             })
-            .catch(err => console.log(err));
+            .catch(err => res.status(404).send(err));
             
     },
     getUserById: (req, res, next) => {
@@ -50,6 +50,6 @@ module.exports = {
                 } 
                 return res.status(200).send(data)
             })
-            .catch(err => console.log(err))
+            .catch(err => res.status(404).send(err))
     }
 }

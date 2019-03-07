@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-const User = require('../../models/users');
 const ticketService = require('../ticket/ticketService');
 const uuid = require('uuid/v1');
 

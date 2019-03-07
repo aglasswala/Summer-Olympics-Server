@@ -3,16 +3,15 @@ const userController = require('./controllers/userController')
 const eventController = require('./controllers/eventController')
 
 module.exports = (router) => {
-
-    // // This will load when the front page loads
+    
     router.get('/', (req, res) => res.status(200).send("OH YEAH"));
-
+    
     // TICKETS
-    router.get('/tickets', ticketController.getTicket) // GET all tickets
+    router.get('/tickets', ticketController.getTicket) 
 
-    router.post('/tickets', ticketController.buyTicket) // POST new Ticket
+    router.post('/tickets', ticketController.buyTicket)
 
-    router.put('/tickets', ticketController.updateTicket) // Update Ticket 
+    router.put('/tickets', ticketController.updateTicket) 
 
     // EVENTS
     router.get('/events', eventController.getAllEvents) // GET all events
@@ -26,7 +25,6 @@ module.exports = (router) => {
     router.get('/getUserById', userController.getUserById)
 
     // Register information
-
     router.post('/register', userController.registerUser)
 
     // router.get('/user/:userId/tickets', (req, res) => {

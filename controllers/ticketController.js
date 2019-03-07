@@ -4,7 +4,7 @@ module.exports = {
     getTicket: (req, res, next) => {
         return ticketService.getTicket()
             .then(response => res.status(200).send(response))
-            .catch(next);
+            .catch(err => res.status(404).send(err));
     },
     // getTicketById: (req, res, next) => {
     //     const { userId } = req.params
@@ -16,13 +16,12 @@ module.exports = {
         const { userId, eventId, cost } = req.body;
         return ticketService.buyUserTicket(userId, eventId, cost)
             .then(response => res.status(200).send(response))
-            .catch(next);
+            .catch(err => res.status(404).send(err));
     },
     updateTicket: (req, res, next) => {
         const { _id, time, cost, eventId, userId } = req.body;
-
         return ticketService.updateTicket(_id, time, cost, eventId, userId)
             .then(response => res.status(200).send(response))
-            .catch(next);
+            .catch(err => res.status(404).send(err));
     }
 }

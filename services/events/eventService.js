@@ -1,6 +1,4 @@
 const ticketService = require('../ticket/ticketService')
-const mongoose = require('mongoose')
-const Event = require('../../models/events')
 const uuidv1 = require('uuid/v1');
 
 module.exports = {
