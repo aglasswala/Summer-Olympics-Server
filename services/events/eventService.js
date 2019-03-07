@@ -5,30 +5,13 @@ const Event = require('../../models/events')
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
-            Event
-                .find()
-                .exec()
-                .then(docs => {
-                    return resolve(docs)
-                })
-                .catch(err => {
-                    return reject(err);
-                })
+            return resolve(ticketService.db.events);
         })
     },
     getEvent: (eventId) => {
         return new Promise((resolve, reject) => {
-            Event
-                .find({
-                    _id: eventId
-                })
-                .exec()
-                .then(docs => {
-                    return resolve(docs)
-                })
-                .catch(err => {
-                    return reject(err);
-                })
+            const getID =  ticketService.db.events.find(events => events._id === eventId)
+            return resolve(getID);
         })
     },
     createEvent: (nameOfEvent, time, athletes, type, userId) => {
