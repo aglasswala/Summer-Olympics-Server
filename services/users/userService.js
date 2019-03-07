@@ -21,9 +21,6 @@ module.exports = {
             }
             return resolve(user);
         })
-        .catch(err => {
-            return console.log(err)
-        })
     },
     registerUser: (firstName, lastName, street, city, state, zip, email, password, age, phoneNumber) => {
         return new Promise((resolve, reject) => {
@@ -43,9 +40,7 @@ module.exports = {
                 tickets: []
             }
             const user = ticketService.db.users.push(newUser)
-            console.log(user)
-            resolve();
-
+            return resolve(newUser);
         })
     }
 }

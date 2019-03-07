@@ -11,7 +11,7 @@ module.exports = {
             .then(user => auth.createJwt(user))
             .then(data => {
                 if(!data) {
-                    res.status(404)
+                    return res.status(404)
                 }
                 return res.status(200).send(data)
             })
@@ -39,32 +39,17 @@ module.exports = {
             .catch(err => res.status(404).send(err))
     },
     registerUser: (req, res, next) => {
-        const { 
-            firstName, 
-            lastName, 
-            street,
-            city,
-            state,
-            zip,
-            email, 
-            password,
-            age,
-            phoneNumber,
-        } = req.body
+        const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
         // TODO VALIDATE
-        return userService.registerUser(
-            firstName, 
-            lastName, 
-            street,
-            city,
-            state,
-            zip,
-            email, 
-            password,
-            age,
-            phoneNumber,
-        )
-            .then(result => res.status(200).send(result))
+        return userService.registerUser(firstName, lastName, street, city, state, zip, email, password, age, phoneNumber)
+            .then(result => auth.createJwt(result))
+            .then(data => {
+                console.log(data)
+                if(!data) {
+                    return res.status(404).send({resp: "couldn't authenticate"})
+                } 
+                return res.status(200).send(data)
+            })
             .catch(err => console.log(err))
     }
 }
