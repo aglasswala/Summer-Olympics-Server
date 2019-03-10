@@ -3,7 +3,10 @@ const eventService = require('../services/events/eventService')
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
-            .then(response => res.status(200).send(response))
+            .then(response => {
+                console.log(response)
+                return res.status(200).send(result)
+            })
             .catch(err => res.status(404).send(err));
     },
     getEventById: (req, res, next) => {

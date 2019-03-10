@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 const mongoose = require('mongoose');
 const uuidv1 = require('uuid/v1');
 
->>>>>>> 3cfd366dffac7bf8e26d753424219cee77ec1959
 let db = {
     users: [
         {
@@ -95,19 +92,22 @@ let db = {
             name: "Swimming",
             registeredTickets: ["ticket1", "ticket3"],
             athletes: ["user2"],
-            results: ["user2"],
+            firstPlace: "user3",
+            secondPlace: "user1",
+            thirdPlace: "user2",
             type: "competition",
             createdBy: "user2"
         },
         {
             _id: "event2",
             name: "Soccer",
-            attendees: ["user1"],
-            registeredTickets: ["ticket4"],
+            registeredTickets: ["ticket1", "ticket3"],
             athletes: ["user2"],
-            results: ["user2"],
+            firstPlace: "user3",
+            secondPlace: "user1",
+            thirdPlace: "user2",
             type: "competition",
-            createdBy: "user3"
+            createdBy: "user2"
         }
     ],
     notifcations: [
