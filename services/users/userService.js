@@ -37,7 +37,7 @@ module.exports = {
                 userType: "public",
                 tickets: []
             }
-            const user = ticketService.db.users.push(newUser)
+            ticketService.db.users.push(newUser)
             return resolve(newUser);
         })
     }

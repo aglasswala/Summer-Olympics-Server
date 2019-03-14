@@ -40,15 +40,12 @@ module.exports = {
     },
     registerUser: (req, res, next) => {
         const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
-        // TODO VALIDATE
-        return userService.registerUser(firstName, lastName, street, city, state, zip, email, password, age, phoneNumber)
-            .then(result => auth.createJwt(result))
+        // TODO VALIDATE and Hash password
+        return userService.registerUser(firstName, lastName, street, city, state, zip, email, password)
+            // .then(result => auth.createJwt(result))
             .then(data => {
-                console.log(data)
-                if(!data) {
-                    return res.status(404).send({resp: "couldn't authenticate"})
-                } 
-                return res.status(200).send(data)
+                const token = auth.createJwt(data._id)
+                return res.status(200).send(token)
             })
             .catch(err => res.status(404).send(err))
     }
