@@ -3,7 +3,32 @@ const eventService = require('../services/events/eventService')
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
-            .then(response => res.status(200).send(response))
+            .then(response => {
+                // let output = response.map((obj) => {
+                //     return Object.keys(obj).sort().map((key) => {
+                //         return obj[key]
+                //     })
+                // })
+                // output = Array.from(output)
+                let newData = []
+                for(let i = 0; i < response.length; i++) {
+                    newData.push({
+                        id: response[i]._id,
+                        name: response[i].name,
+                        registeredTickets: response[i].registeredTickets.length,
+                        athletes: response[i].athletes.length,
+                        type: response[i].type
+                    })
+                }
+                let output = newData.map((obj) => {
+                    return Object.keys(obj).sort().map((key) => {
+                        return obj[key]
+                    })
+                })
+                output = Array.from(output)
+                console.log(output)
+                return res.status(200).send(output)
+            })
             .catch(err => res.status(404).send(err));
     },
     getEventById: (req, res, next) => {

@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-=======
-const mongoose = require('mongoose');
 const uuidv1 = require('uuid/v1');
 
->>>>>>> 3cfd366dffac7bf8e26d753424219cee77ec1959
 let db = {
     users: [
         {
@@ -109,9 +105,6 @@ let db = {
             type: "competition",
             createdBy: "user3"
         }
-    ],
-    notifcations: [
-
     ]
 }
 
@@ -139,9 +132,7 @@ module.exports = {
                 eventId: eventId,
                 userID: userId
             }
-            
-            db.tickets.push(newTicket);       
-
+            db.tickets.push(newTicket)
             const getID =  ticketService.db.events.find(events => events._id === eventId)
             getID.registeredTickets.push(newTicket._id);
             return resolve(db.tickets)
@@ -151,9 +142,9 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const index = db.tickets.findIndex((obj => obj._id == _id));
             db.tickets[index].time = time,
-                db.tickets[index].cost = cost,
-                db.tickets[index].eventId = eventId,
-                db.tickets[index].userID = userId
+            db.tickets[index].cost = cost,
+            db.tickets[index].eventId = eventId,
+            db.tickets[index].userID = userId
 
             return resolve(db.tickets);
         })
