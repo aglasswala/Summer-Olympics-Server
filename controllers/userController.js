@@ -13,7 +13,10 @@ module.exports = {
                 if(!data) {
                     return res.status(404)
                 }
-                return res.status(200).send(data)
+                return res.status(200).send({
+                    email,
+                    userToken: data
+                })
             })
             .catch(err => res.status(404).send(err));
             
