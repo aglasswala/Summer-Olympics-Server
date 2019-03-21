@@ -8,14 +8,15 @@ module.exports = {
         const { email, password } = req.body
         // Validate EMAIL and PASSWORD
         return userService.getUser(email, password)
-            .then(user => auth.createJwt(user))
-            .then(data => {
+            .then(user => {
+                const data = auth.createJwt(user)
                 if(!data) {
-                    return res.status(404)
+                    return res.status(404).send("invalid token created")
                 }
+                console.log(user + " " + data)
                 return res.status(200).send({
-                    email,
-                    userToken: data
+                    userToken: data,
+                    user
                 })
             })
             .catch(err => res.status(404).send(err));
