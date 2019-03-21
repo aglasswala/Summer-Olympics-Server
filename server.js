@@ -1,28 +1,41 @@
-// env variables 
 require('dotenv').config()
 
-// imports 
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser')
+const cors = require('cors')
 
-const { MONGODB_USER, MONGODB_PASSWORD } = process.env
-mongoose.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@summerolympics-0tpzz.mongodb.net/test?retryWrites=true`, {
-    useNewUrlParser: true
-})
-const app = express();
+const router = require('./routes');
 
+function startServer(server) {
 
+     const { MONGODB_USER, MONGODB_PASSWORD, APP_PORT } = process.env
+    // mongoose.connect(`mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@summerolympics-0tpzz.mongodb.net/test?retryWrites=true`, {
+    //     useNewUrlParser: true
+    // }).catch((err) => {
+    //     console.log(err)
+    // });
 
-app.get('/', (req, res) => {
-    res.send("HELLO").status(200);
-})
+    // mongoose.connection.once('open', function () {
+    //     console.log("MongoDB is connected")
+        server.listen(APP_PORT || 3000, () => {
+            console.log(`Server is listening on ${APP_PORT}`)
+        })
+    // })
+}
 
+async function init() {
+    const app = express();
 
+    mongoose.set('useNewUrlParser', true);
+    mongoose.set('useFindAndModify', false);
+    mongoose.set('useCreateIndex', true);
 
+    app.use(bodyParser.json());
+    app.use(cors());
 
-mongoose.connection.once('open', function () {
-    console.log("MongoDB is connected")
-    app.listen(process.env.APP_PORT || 3000, () => {
-        console.log(`Server is listening on ${process.env.APP_PORT}`)
-    })
-})
+    router(app);
+    startServer(app);
+}
+
+init();
