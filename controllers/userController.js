@@ -1,6 +1,5 @@
 const userService = require('../services/users/userService')
 const auth = require('../auth/auth')
-const jwt = require('jsonwebtoken')
 
 
 module.exports = {
@@ -10,17 +9,12 @@ module.exports = {
         return userService.getUser(email, password)
             .then(user => {
                 const data = auth.createJwt(user)
-                if(!data) {
-                    return res.status(404).send("invalid token created")
-                }
-                console.log(user + " " + data)
                 return res.status(200).send({
                     userToken: data,
                     user
                 })
             })
             .catch(err => res.status(404).send(err));
-            
     },
     getUserById: (req, res, next) => {
         const decoded = auth.verifyJwt(req.headers['x-access-token']);

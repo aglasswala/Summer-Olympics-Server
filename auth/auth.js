@@ -3,8 +3,8 @@ const { SECURE_KEY_JWT } = process.env;
 
 module.exports = {
   createJwt: (user) => {
-    const userToken = jwt.sign({ id: user._id }, 
-      SECURE_KEY_JWT, {expiresIn: '1hr'})
+    const userToken = jwt.sign({ email: user.email },
+      SECURE_KEY_JWT, { expiresIn: '1hr' })
     return userToken
   },
   verifyJwt: (header) => {
