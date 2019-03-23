@@ -21,7 +21,7 @@ module.exports = (router) => {
 
     // Login information
     router.post('/api/login', userController.loginUser)
-    router.get('/api/login', userController.getUserById)
+    router.post('/api/getUser', userController.getUserById)
 
     // Register information
     router.post('/api/register', userController.registerUser)

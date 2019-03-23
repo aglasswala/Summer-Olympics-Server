@@ -17,25 +17,35 @@ module.exports = {
             .catch(err => res.status(404).send(err));
     },
     getUserById: (req, res, next) => {
-        const decoded = auth.verifyJwt(req.headers['x-access-token']);
-        return userService.getUserById(decoded.id)
+        const { id } = req.body
+        console.log(req.body)
+        return userService.getUserById(id)
             .then(response => {
-                return res.status(200).send({
-                    firstName: response.firstName,
-                    lastName: response.lastName,
-                    email: response.email,
-                    age: response.age,
-                    street: response.street,
-                    city: response.city,
-                    state: response.state,
-                    zip: response.zip,
-                    phoneNumber: response.phoneNumber,
-                    tickets: response.tickets,
-                    userType: response.userType
-                })
+                console.log(response)
+                return res.status(200).send(response)
             })
-            .catch(err => res.status(404).send(err))
+            .catch(err => res.status(404).send("dasdf"))
     },
+    // getUserById: (req, res, next) => {
+    //     const decoded = auth.verifyJwt(req.headers['x-access-token']);
+    //     return userService.getUserById(decoded.id)
+    //         .then(response => {
+    //             return res.status(200).send({
+    //                 firstName: response.firstName,
+    //                 lastName: response.lastName,
+    //                 email: response.email,
+    //                 age: response.age,
+    //                 street: response.street,
+    //                 city: response.city,
+    //                 state: response.state,
+    //                 zip: response.zip,
+    //                 phoneNumber: response.phoneNumber,
+    //                 tickets: response.tickets,
+    //                 userType: response.userType
+    //             })
+    //         })
+    //         .catch(err => res.status(404).send(err))
+    // },
     registerUser: (req, res, next) => {
         const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
         // TODO VALIDATE and Hash password
