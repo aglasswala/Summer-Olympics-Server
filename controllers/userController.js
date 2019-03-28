@@ -50,9 +50,7 @@ module.exports = {
         return userService.registerUser(firstName, lastName, street, city, state, zip, email, password)
             // .then(result => auth.createJwt(result))
             .then(data => {
-                console.log(data)
                 const token = auth.createJwt(data._id)
-                console.log(token)
                 return res.status(200).send({token})
             })
             .catch(err => res.status(404).send(err))
