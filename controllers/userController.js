@@ -31,7 +31,10 @@ module.exports = {
             // .then(result => auth.createJwt(result))
             .then(data => {
                 const token = auth.createJwt(data._id)
-                return res.status(200).send({token})
+                return res.status(200).send({
+                    user: data,
+                    token
+                })
             })
             .catch(err => res.status(404).send(err))
     }
