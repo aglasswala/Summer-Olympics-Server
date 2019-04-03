@@ -20,7 +20,11 @@ module.exports = {
                     })
                 })
                 output = Array.from(output)
-                return res.status(200).send(output)
+                const result = {
+                    output,
+                    allEvents: response
+                }
+                return res.status(200).send(result)
             })
             .catch(err => res.status(404).send(err));
     },

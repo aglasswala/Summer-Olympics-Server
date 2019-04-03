@@ -37,6 +37,7 @@ let db = {
             lastName: "smith",
             address: "345 River Rd",
             email: "jack@gmail.com",
+            password: "123",
             age: 20,
             phoneNumber: "2012148385",
             createdEvents: ["event1"],
