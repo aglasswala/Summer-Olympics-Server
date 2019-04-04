@@ -37,5 +37,12 @@ module.exports = {
                 })
             })
             .catch(err => res.status(404).send(err))
+    },
+    getAthletes: (req, res, next) => {
+        return userService.getAthletes()
+            .then(data => res.status(200).send({
+                athletes: data
+            }))
+            .catch(err => res.status(400).send({err}))
     }
 }

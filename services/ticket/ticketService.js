@@ -32,6 +32,20 @@ let db = {
             tickets: ["ticket2", "ticket3"]
         },
         {
+            _id: "user7",
+            firstName: "John",
+            lastName: "Appleseed",
+            address: "345 River Rd",
+            email: "johnj@gmail.com",
+            password: "123",
+            age: 20,
+            representingCountry: "USA",
+            phoneNumber: "2012148385",
+            userType: "athlete",
+            registeredEvents: ["event1", "event2"],
+            tickets: ["ticket9", "ticket2"]
+        },
+        {
             _id: "user3",
             firstName: "Jack",
             lastName: "smith",
@@ -93,6 +107,7 @@ let db = {
             registeredTickets: ["ticket1", "ticket3"],
             athletes: ["user2"],
             time: "12:00 PM",
+            date: "",
             stadium: "Carioca Arena 3",
             location: "Rio de Janeiro, Brazil",
             firstPlace: "user3",

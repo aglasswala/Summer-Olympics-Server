@@ -13,22 +13,22 @@ module.exports = {
             return resolve(getID);
         })
     },
-    createEvent: (nameOfEvent, time, athletes, type, userId) => {
+    createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
-            const newEvent = {
-                _id: uuid,
-                nameOfEvent: nameOfEvent,
+            const compEvent = {
+                _id: uuidv1(),
+                name: nameOfEvent,
+                registeredTickets: 0,
+                athletes: registeredAthletes,
                 time: time,
-                registeredTickets: [],
-                numberOfAttendees: 0,
-                athletes: athletes,
-                results: [],
-                type: type,
-                createdBy: userId
+                date: date,
+                stadium: stadium,
+                location,
+                type: "competition",
+                createdBy: createdBy
             }
-            ticketService.db.events.push(newEvent);
-            return resolve(newEvent); 
+            ticketService.db.events.push(compEvent)
+            return resolve(ticketService.db.events)
         })
-            
     }
 }
