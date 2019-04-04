@@ -24,7 +24,6 @@ module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
             .then(response => {
-                console.log(response)
                 const compEvents = arrayify(response.compEvents)
                 const awardEvents = arrayify(response.awardEvents)
                 const autoEvents = arrayify(response.autoEvents)
@@ -35,7 +34,6 @@ module.exports = {
                     autoEvents,
                     allEvents: response.allEvents
                 }
-                console.log(result)
                 return res.status(200).send(result)
             })
             .catch(err => res.status(404).send(err));
