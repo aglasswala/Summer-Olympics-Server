@@ -110,9 +110,6 @@ let db = {
             date: "",
             stadium: "Carioca Arena 3",
             location: "Rio de Janeiro, Brazil",
-            firstPlace: "user3",
-            secondPlace: "user1",
-            thirdPlace: "user2",
             type: "competition",
             createdBy: "user2"
         },
@@ -124,9 +121,6 @@ let db = {
             time: "12:00 PM",
             stadium: "Carioca Arena 3",
             location: "Rio de Janeiro, Brazil",
-            firstPlace: "user3",
-            secondPlace: "user1",
-            thirdPlace: "user2",
             type: "competition",
             createdBy: "user2"
         },
@@ -138,9 +132,6 @@ let db = {
             time: "12:00 PM",
             stadium: "Carioca Arena 3",
             location: "Rio de Janeiro, Brazil",
-            firstPlace: "",
-            secondPlace: "",
-            thirdPlace: "",
             type: "competition",
             createdBy: "user2"
         },
@@ -152,12 +143,45 @@ let db = {
             time: "12:00 PM",
             stadium: "Carioca Arena 3",
             location: "Rio de Janeiro, Brazil",
-            firstPlace: "user3",
-            secondPlace: "user1",
-            thirdPlace: "user2",
             type: "competition",
             createdBy: "user2"
-        }
+        },
+        {
+            _id: "event5",
+            name: "Awards",
+            registeredTickets: ["ticket1", "ticket3"],
+            event: "event2",
+            athletes: ["user2", "user3", "user5"],
+            time: "6:00 PM",
+            stadium: "Carioca Arena 3",
+            location: "Rio de Janeiro, Brazil",
+            type: "awardCeremony",
+            createdBy: "user2"
+        },
+        {
+            _id: "event6",
+            name: "Winner for event1",
+            registeredTickets: ["ticket1", "ticket3"],
+            event: "event1",
+            athletes: ["user2", "user3", "user5"],
+            time: "6:00 PM",
+            stadium: "Carioca Arena 3",
+            location: "Rio de Janeiro, Brazil",
+            type: "awardCeremony",
+            createdBy: "user2"
+        },
+        {
+            _id: "event7",
+            name: "Auto Graphs",
+            registeredTickets: ["ticket1", "ticket3"],
+            event: "event1",
+            athletes: ["user2", "user3", "user5"],
+            time: "6:00 PM",
+            stadium: "Carioca Arena 3",
+            location: "Rio de Janeiro, Brazil",
+            type: "autographs",
+            createdBy: "user2"
+        },
     ]
 }
 

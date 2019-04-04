@@ -4,7 +4,18 @@ const uuidv1 = require('uuid/v1');
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
-            return resolve(ticketService.db.events);
+            const compEvents = ticketService.db.events.filter(event => event.type === "competition")
+            const awardEvents = ticketService.db.events.filter(event => event.type === "awardCeremony")
+            const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
+
+            const allEvents = ticketService.db.events
+            const result = {
+                compEvents,
+                awardEvents,
+                autoEvents,
+                allEvents
+            }
+            return resolve(result);
         })
     },
     getEvent: (eventId) => {
@@ -28,7 +39,7 @@ module.exports = {
                 createdBy: createdBy
             }
             ticketService.db.events.push(compEvent)
-            return resolve(ticketService.db.events)
+            return resolve(compEvent)
         })
     }
 }
