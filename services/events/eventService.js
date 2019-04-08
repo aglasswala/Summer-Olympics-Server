@@ -29,7 +29,7 @@ module.exports = {
             const compEvent = {
                 _id: uuidv1(),
                 name: nameOfEvent,
-                registeredTickets: 0,
+                registeredTickets: [],
                 athletes: registeredAthletes,
                 time: time,
                 date: date,
