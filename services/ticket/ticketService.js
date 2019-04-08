@@ -149,6 +149,7 @@ let db = {
         {
             _id: "event5",
             name: "Awards",
+            registeredTickets: ["ticket1", "ticket3"],
             event: "event2",
             athletes: ["user2", "user3", "user5"],
             time: "6:00 PM",

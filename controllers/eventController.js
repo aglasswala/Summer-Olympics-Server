@@ -2,6 +2,7 @@ const eventService = require('../services/events/eventService')
 
 const arrayify = (response) => {
     let newData = []
+    
     for(let i = 0; i < response.length; i++) {
         newData.push({
             name: response[i].name,
@@ -27,7 +28,6 @@ module.exports = {
                 const compEvents = arrayify(response.compEvents)
                 const awardEvents = arrayify(response.awardEvents)
                 const autoEvents = arrayify(response.autoEvents)
-                
                 const result = {
                     compEvents,
                     awardEvents,
