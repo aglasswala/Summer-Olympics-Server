@@ -27,7 +27,7 @@ module.exports = {
     registerUser: (req, res, next) => {
         const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
         // TODO VALIDATE and Hash password
-        return userService.registerUser(firstName, lastName, street, city, state, zip, email, password)
+        return userService.registerUser("firstName", "lastName", "street", "city", "NJ" , 07603 , "aglasswala@gmail.com", "US")
             // .then(result => auth.createJwt(result))
             .then(data => {
                 const token = auth.createJwt(data._id)

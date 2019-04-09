@@ -1,4 +1,5 @@
 const ticketService = require('../ticket/ticketService')
+const db = require('../../database/database')
 const uuidv1 = require('uuid/v1');
 
 module.exports = {

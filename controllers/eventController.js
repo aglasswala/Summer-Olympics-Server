@@ -1,4 +1,5 @@
 const eventService = require('../services/events/eventService')
+const db = require('../database/database')
 
 const arrayify = (response) => {
     let newData = []
@@ -23,6 +24,7 @@ const arrayify = (response) => {
 
 module.exports = {
     getAllEvents: (req, res, next) => {
+
         return eventService.getAllEvents()
             .then(response => {
                 const compEvents = arrayify(response.compEvents)
@@ -34,6 +36,9 @@ module.exports = {
                     autoEvents,
                     allEvents: response.allEvents
                 }
+                return result
+            })
+            .then(result => {
                 return res.status(200).send(result)
             })
             .catch(err => res.status(404).send(err));
