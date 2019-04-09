@@ -1,6 +1,17 @@
 const ticketService = require('../ticket/ticketService');
+const bcrypt = require('bcrypt');
 const uuid = require('uuid/v1');
-const db = require('../../database/database')
+const knex = require('knex');
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: '1234',
+    database: 'postgres'
+  }
+})
 
 module.exports = {
     getUser: (email, password) => {
@@ -21,48 +32,43 @@ module.exports = {
             return resolve(user);
         })
     },
-    registerUser: (firstName, lastName, street, city, state, zip, email, countryOfOrigin) => {
-            console.log(db)
-            db('users')
-            .returning()
-            .insert({
-                FName: firstName,
-                LName: lastName,
-                street: street,
-                city: city,
-                state: state,
-                zip: zip,
-                email: email,
-                phoneNumber: phoneNumber,
-                countryOfOrigin: countryOfOrigin,
-                userType: 1
+    registerUser: (firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password) => {
+        return new Promise((resolve, reject) => {
+          let user = {}
+          const hash = bcrypt.hashSync(password, 10)
+          db.transaction(trx => {
+            trx.insert({
+              hash: hash,
+              email: email
+            })
+            .into('login')
+            .returning('email')
+            .then(loginEmail => {
+              return trx('users')
+                      .returning('*')
+                      .insert({
+                        fname: firstName,
+                        lname: lastName,
+                        street: street,
+                        city: city,
+                        state: state,
+                        zip: zip,
+                        email: loginEmail[0],
+                        phonenumber: phoneNumber,
+                        countryoforigin: countryOfOrigin,
+                        usertype: 1
+                      })
             })
             .then(data => {
-                console.log(data)
-                return new Promise((resolve, reject) => {
-                    return resolve(data)
-                })
+              console.log(data)
+              return resolve(data[0])
             })
-            .catch(err => console.log(err))
-            // return resolve(newUser);
+            .then(trx.commit)
+            .catch(trx.rollback)
+          })
+        })
     },
 
-            // const newUser = {
-            //     _id: uuid(),
-            //     firstName,
-            //     lastName,
-            //     street,
-            //     city,
-            //     state,
-            //     zip,
-            //     email,
-            //     password,
-            //     age,
-            //     phoneNumber,
-            //     userType: "public",
-            //     tickets: []
-            // }
-            // ticketService.db.users.push(newUser)
     getAthletes: () => {
         return new Promise((resolve, reject) => {
             const athletes = ticketService.db.users.filter(user => user.userType === "athlete")

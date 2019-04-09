@@ -25,12 +25,11 @@ module.exports = {
             .catch(err => res.status(404).send("dasdf"))
     },
     registerUser: (req, res, next) => {
-        const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
-        // TODO VALIDATE and Hash password
-        return userService.registerUser("firstName", "lastName", "street", "city", "NJ" , 07603 , "aglasswala@gmail.com", "US")
-            // .then(result => auth.createJwt(result))
+        const { firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password } = req.body
+        // TODO VALIDATE
+        return userService.registerUser(firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password)
             .then(data => {
-                const token = auth.createJwt(data._id)
+                const token = auth.createJwt(data.userid)
                 return res.status(200).send({
                     user: data,
                     token
