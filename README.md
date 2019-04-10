@@ -1,34 +1,8 @@
-Project Plan
+TODO:
 
-Endpoints for API
+(not in order, pick one)
 
-/tickets
-    - GET tickets
-    - POST new ticket
-    - PUT Tickets 
-    - Delete Tickets 
-
-/users/{id}
-    - GET all users
-
-/events
-    - Get (show) all events
-
-/events/{id}
-    - Get events for Athlete only
-
-/events/create
-    - GET all events
-    - POST new Event 
-
-/signin
-    - GET all users
-
-/register
-    - GET all users
-    - POST new user
-
-Todo: 
-    - Finish creating fake database
-    - Start working on making all the functions works
-    - Incorporate Mongo 
+- fix the layout of the register page
+- add validation to the register page (ask dill for details)
+- seperate styles from components 
+- connect events to database

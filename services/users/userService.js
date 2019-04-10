@@ -35,11 +35,9 @@ module.exports = {
     },
     getUserById: (userId) => {
         return new Promise((resolve, reject) => {
-            const user = ticketService.db.users.find(user => user._id === userId)
-            if(!user) {
-                return reject()
-            }
-            return resolve(user);
+            db.select().where('userid', userId)
+            .then(data => resolve(data))
+            .catch(err => reject(err))
         })
     },
     registerUser: (firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password) => {

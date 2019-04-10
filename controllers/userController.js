@@ -14,12 +14,13 @@ module.exports = {
                     user
                 })
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({err: er}));
     },
     getUserById: (req, res, next) => {
         const { id } = req.body
         return userService.getUserById(id)
             .then(response => {
+                console.log(response)
                 return res.status(200).send(response)
             })
             .catch(err => res.status(404).send("dasdf"))
@@ -30,6 +31,7 @@ module.exports = {
         return userService.registerUser(firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password)
             .then(data => {
                 const token = auth.createJwt(data.userid)
+                console.log(token)
                 return res.status(200).send({
                     user: data,
                     token
