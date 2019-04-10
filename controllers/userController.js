@@ -8,7 +8,7 @@ module.exports = {
         // Validate EMAIL and PASSWORD
         return userService.getUser(email, password)
             .then(user => {
-                const data = auth.createJwt(user)
+                const data = auth.createJwt(user.userid)
                 return res.status(200).send({
                     userToken: data,
                     user
