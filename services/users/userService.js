@@ -16,8 +16,18 @@ const db = knex({
 module.exports = {
     getUser: (email, password) => {
         return new Promise((resolve, reject) => {
-            const user = ticketService.db.users.find(user => user.email === email && user.password === password)
-            return resolve(user);
+            db.select('email', 'hash').from('login')
+              .where('email', '=', email)
+              .then(data => {
+                const isValid = bcrypt.compareSync(password, data[0].hash)
+                if(isValid) {
+                  return db.select('*').from('users').where('email', '=', email)
+                  .then(user => {
+                    return resolve(user[0])
+                  })
+                  .catch(err => reject(err))
+                }
+              })
         })
         .catch(err => {
             return reject(err)
@@ -60,7 +70,6 @@ module.exports = {
                       })
             })
             .then(data => {
-              console.log(data)
               return resolve(data[0])
             })
             .then(trx.commit)
