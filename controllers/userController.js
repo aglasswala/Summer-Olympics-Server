@@ -20,7 +20,6 @@ module.exports = {
         const { id } = req.body
         return userService.getUserById(id)
             .then(response => {
-                console.log(response)
                 return res.status(200).send(response)
             })
             .catch(err => res.status(404).send("dasdf"))

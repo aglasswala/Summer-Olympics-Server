@@ -35,8 +35,10 @@ module.exports = {
     },
     getUserById: (userId) => {
         return new Promise((resolve, reject) => {
-            db.select().where('userid', userId)
-            .then(data => resolve(data))
+            db.select("*").where('userid', userId).from('users')
+            .then(data => {
+              return resolve(data[0])
+            })
             .catch(err => reject(err))
         })
     },
