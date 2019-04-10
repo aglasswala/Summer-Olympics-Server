@@ -3,14 +3,12 @@ const db = require('../database/database')
 
 const arrayify = (response) => {
     let newData = []
-    
     for(let i = 0; i < response.length; i++) {
         newData.push({
-            name: response[i].name,
-            stadium: response[i].stadium,
-            location: response[i].location,
+            name: response[i].sportname,
+            stadium: response[i].venue,
             time: response[i].time,
-            registeredTickets: response[i].registeredTickets.length,
+            date: response[i].date
         })
     }
     let output = newData.map((obj) => {

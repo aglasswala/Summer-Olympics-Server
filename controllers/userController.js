@@ -30,7 +30,6 @@ module.exports = {
         return userService.registerUser(firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password)
             .then(data => {
                 const token = auth.createJwt(data.userid)
-                console.log(token)
                 return res.status(200).send({
                     user: data,
                     token

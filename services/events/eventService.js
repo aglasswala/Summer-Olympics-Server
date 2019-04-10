@@ -1,22 +1,37 @@
 const ticketService = require('../ticket/ticketService')
-const db = require('../../database/database')
+const knex = require('knex');
 const uuidv1 = require('uuid/v1');
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: '1234',
+    database: 'postgres'
+  }
+})
+
 
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
-            const compEvents = ticketService.db.events.filter(event => event.type === "competition")
-            const awardEvents = ticketService.db.events.filter(event => event.type === "awardCeremony")
-            const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
+            let compEvents = []
+            db.select('*').from('competitionevents')
+                .then(compEvents => {
+                    const awardEvents = ticketService.db.events.filter(event => event.type === "awardCeremony")
+                    const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
 
-            const allEvents = ticketService.db.events
-            const result = {
-                compEvents,
-                awardEvents,
-                autoEvents,
-                allEvents
-            }
-            return resolve(result);
+                    const allEvents = ticketService.db.events
+                    const result = {
+                        compEvents,
+                        awardEvents,
+                        autoEvents,
+                        allEvents
+                    }
+                    return resolve(result);
+                })
+                .catch(err => reject(err))
         })
     },
     getEvent: (eventId) => {

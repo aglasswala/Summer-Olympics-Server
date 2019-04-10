@@ -66,7 +66,7 @@ module.exports = {
                         email: loginEmail[0],
                         phonenumber: phoneNumber,
                         countryoforigin: countryOfOrigin,
-                        usertype: 1
+                        usertype: 2
                       })
             })
             .then(data => {
