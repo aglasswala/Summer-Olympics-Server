@@ -20,32 +20,31 @@ const compEventsArrayify = (response) => {
     return output
 }
 
-const awardEventsArrayify = (response) => {
-    let newData = []
-    Promise.all(
-        response.map(event => {
-            eventService.getCompetitionEvent(event.eventid)
-                .then(name => {
-                    newData.push({
-                        name: name.sportname,
-                        stadium: event.venue,
-                        time: event.time,
-                        date: event.date
-                    })
-                })
-                .catch(err => console.log(err))
-        })
-    )
-    console.log(newData)
-    
-    let output = newData.map((obj) => {
-        return Object.keys(obj).map((key) => {
-            return obj[key]
-        })
-    })
-    output = Array.from(output)
-    return output
+const getName = (eventId) => {
+
 }
+
+const awardEventsArrayify = async (events) => {
+    const eventValues = []
+
+    await Promise.all(events.map(async (event) => {
+      return eventService.getCompetitionEvent(event.eventid)
+        .then((competitionEvent) => {
+          eventValues.push([
+            competitionEvent.sportname,
+            event.venue,
+            event.time,
+            event.date
+          ]);
+        })
+        .catch(err => console.log(err))
+    }))
+    .then(() => {
+        console.log(eventValues)
+        return eventValues
+    })
+}
+
 
 module.exports = {
     getAllEvents: (req, res, next) => {
@@ -53,21 +52,27 @@ module.exports = {
         return eventService.getAllEvents()
             .then(response => {
                 const compEvents = compEventsArrayify(response.compEvents)
-                const awardEvents = awardEventsArrayify(response.awardEvents)
-                console.log(awardEvents)
                 const autoEvents = compEventsArrayify(response.autoEvents)
                 const result = {
                     compEvents,
-                    awardEvents,
                     autoEvents,
                     allEvents: response.allEvents
                 }
                 return result
             })
+            .then((result) => {
+                return awardEventsArrayify(response.awardEvents)
+                    .then(events => {
+                        console.log(events)
+                        result.events = events
+                        return result
+                    })
+                    .catch(err => console.log(err))
+            })
             .then(result => {
                 return res.status(200).send(result)
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({err: "SDFSDF"}));
     },
     getCompetitionEventById: (req, res, next) => {
         const { eventId } = req.params;
