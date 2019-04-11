@@ -68,6 +68,10 @@ module.exports = {
                         countryoforigin: countryOfOrigin,
                         usertype: 2
                       })
+
+                      // Public users are 1
+                      // Athletes are 2
+                      // Employees are 3
             })
             .then(data => {
               return resolve(data[0])

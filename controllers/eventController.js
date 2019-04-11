@@ -1,7 +1,7 @@
 const eventService = require('../services/events/eventService')
-const db = require('../database/database')
 
-const arrayify = (response) => {
+
+const compEventsArrayify = (response) => {
     let newData = []
     for(let i = 0; i < response.length; i++) {
         newData.push({
@@ -20,14 +20,42 @@ const arrayify = (response) => {
     return output
 }
 
+const awardEventsArrayify = (response) => {
+    let newData = []
+    Promise.all(
+        response.map(event => {
+            eventService.getCompetitionEvent(event.eventid)
+                .then(name => {
+                    newData.push({
+                        name: name.sportname,
+                        stadium: event.venue,
+                        time: event.time,
+                        date: event.date
+                    })
+                })
+                .catch(err => console.log(err))
+        })
+    )
+    console.log(newData)
+    
+    let output = newData.map((obj) => {
+        return Object.keys(obj).map((key) => {
+            return obj[key]
+        })
+    })
+    output = Array.from(output)
+    return output
+}
+
 module.exports = {
     getAllEvents: (req, res, next) => {
 
         return eventService.getAllEvents()
             .then(response => {
-                const compEvents = arrayify(response.compEvents)
-                const awardEvents = arrayify(response.awardEvents)
-                const autoEvents = arrayify(response.autoEvents)
+                const compEvents = compEventsArrayify(response.compEvents)
+                const awardEvents = awardEventsArrayify(response.awardEvents)
+                console.log(awardEvents)
+                const autoEvents = compEventsArrayify(response.autoEvents)
                 const result = {
                     compEvents,
                     awardEvents,
@@ -41,9 +69,9 @@ module.exports = {
             })
             .catch(err => res.status(404).send(err));
     },
-    getEventById: (req, res, next) => {
+    getCompetitionEventById: (req, res, next) => {
         const { eventId } = req.params;
-        return eventService.getEvent(eventId)
+        return eventService.getCompetitionEvent(eventId)
             .then(response => res.status(200).send(response))
             .catch(err => res.status(404).send(err));
     },

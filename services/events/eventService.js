@@ -17,9 +17,18 @@ module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
             let compEvents = []
+            let awardEvents = []
             db.select('*').from('competitionevents')
-                .then(compEvents => {
-                    const awardEvents = ticketService.db.events.filter(event => event.type === "awardCeremony")
+                .then(data => {
+                    compEvents = data
+                })
+                .then(() => {
+                    return db.select('*').from('ceremonyevents')
+                })
+                .then(ceremonyEvents => {
+                    awardEvents = ceremonyEvents
+                })
+                .then(() => {
                     const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
 
                     const allEvents = ticketService.db.events
@@ -32,12 +41,14 @@ module.exports = {
                     return resolve(result);
                 })
                 .catch(err => reject(err))
+
         })
     },
-    getEvent: (eventId) => {
+    getCompetitionEvent: (eventId) => {
         return new Promise((resolve, reject) => {
-            const getID =  ticketService.db.events.find(events => events._id === eventId)
-            return resolve(getID);
+            db.select('*').where('eventid', '=', eventId).from('competitionevents')
+                .then(data => resolve(data[0]))
+                .catch(err => reject(err))
         })
     },
     createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
