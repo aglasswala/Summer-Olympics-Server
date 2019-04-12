@@ -1,17 +1,17 @@
 Login Table
-
+//
 create table login(loginid serial primary key, hash varChar(100) not null, email text unique not null);
 
 Users table 
-
+//
 CREATE TABLE Users (userId serial PRIMARY KEY, FName varChar(20) not null, LName varChar(20) not null, Street varChar(255) not null, city varChar(20) not null, state char(2) not null, zip char(5) not null, email varChar(30) not null, phoneNumber char(10) not null, countryOfOrigin varChar(20) not null, userType int not null);
 
 competitionEvents
-
+//
 create table competitionEvents(eventId serial primary key not null, sportName varChar(20) not null, time time not null, date date not null, venue varChar(20) not null, userid serial references users(userid));
 
 ceremonyEvents
-
+//
 create table ceremonyevents(ceremonyid serial primary key not null, eventid serial references competitionevents(eventid), firstplace serial references users(userid), secondplace serial references users(userid), thirdplace serial references users(userid), time time not null, date date not null, venue varChar(20) not null, createdBy serial references users(userid));
 
 ceremonyevents users 
