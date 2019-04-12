@@ -16,39 +16,71 @@ const db = knex({
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
-            let compEvents = []
-            let awardEvents = []
-            db.select('*').from('competitionevents')
-                .then(data => {
-                    compEvents = data
-                })
-                .then(() => {
-                    return db.select('*').from('ceremonyevents')
-                })
-                .then(ceremonyEvents => {
-                    awardEvents = ceremonyEvents
-                })
-                .then(() => {
-                    const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
+          let compEvent = []
+          let ceremonyEvents = [] 
+          db.select('sportname', 'date', 'time', 'venue').from('competitionevents')
+            .then(allCompEvents => {
+              compEvent = allCompEvents
+              return db('competitionevents')
+                      .join('ceremonyevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+                      .select('sportname', 'ceremonyevents.time', 'ceremonyevents.date', 'ceremonyevents.venue')
+            })
+            .then(ceremEvents => {
+              ceremonyEvents = ceremEvents
+              const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
 
-                    const allEvents = ticketService.db.events
-                    const result = {
-                        compEvents,
-                        awardEvents,
-                        autoEvents,
-                        allEvents
-                    }
-                    return resolve(result);
-                })
-                .catch(err => reject(err))
+              const allEvents = ticketService.db.events
+              const result = {
+                  compEvent,
+                  ceremonyEvents,
+                  autoEvents,
+                  allEvents
+              }
+              return resolve(result);
+            })
+            .catch(err => reject(err))
+            
+
+
+
+
+            // let compEvents = []
+            // let awardEvents = []
+            // db.select('*').from('competitionevents')
+            //     .then(data => {
+            //         compEvents = data
+            //     })
+            //     .then(() => {
+            //         return db.select('*').from('ceremonyevents') // dont use stars
+            //     })
+            //     .then(ceremonyEvents => {
+            //         awardEvents = ceremonyEvents
+            //     })
+            //     .then(() => {
+            //         const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
+
+            //         const allEvents = ticketService.db.events
+            //         const result = {
+            //             compEvents,
+            //             awardEvents,
+            //             autoEvents,
+            //             allEvents
+            //         }
+            //         return resolve(result);
+            //     })
+            //     .catch(err => reject(err))
 
         })
     },
     getCompetitionEvent: (eventId) => {
         return new Promise((resolve, reject) => {
-            db.select('*').where('eventid', '=', eventId).from('competitionevents')
-                .then(data => resolve(data[0]))
-                .catch(err => reject(err))
+            db('competitionevents')
+              .join('ceremonyevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+              .select('sportname', 'ceremonyevents.time', 'ceremonyevents.date', 'ceremonyevents.venue')
+                .then(data => {
+                  return resolve(data[0])
+                })
+                .catch(err => reject(err));
         })
     },
     createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
@@ -68,5 +100,5 @@ module.exports = {
             ticketService.db.events.push(compEvent)
             return resolve(compEvent)
         })
-    }
+    },
 }
