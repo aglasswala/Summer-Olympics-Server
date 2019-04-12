@@ -20,9 +20,15 @@ module.exports = {
                 const compEvents = compEventsArrayify(response.compEvent)
                 const autoEvents = compEventsArrayify(response.autoEvents)
                 const awardEvents = compEventsArrayify(response.ceremonyEvents)
-                compEvents[0][3] = new Date(compEvents[0][3]).toString().substring(4,15);
-                autoEvents[0][3] = new Date(autoEvents[0][3]).toString().substring(4,15);
-                awardEvents[0][3] = new Date(awardEvents[0][3]).toString().substring(4,15);
+                for(let b = 0; b < response.compEvent.length; b++){
+                    compEvents[b][3] = new Date(compEvents[b][3]).toString().substring(4,15);
+                }
+                for(let n = 0; n < response.autoEvents.length; n++){
+                    autoEvents[n][3] = new Date(autoEvents[n][3]).toString().substring(4,15);
+                }
+                for(let m = 0; m < response.ceremonyEvents.length; m++){
+                    awardEvents[m][3] = new Date(awardEvents[m][3]).toString().substring(4,15);
+                }
                 const result = {
                     compEvents,
                     awardEvents,
