@@ -17,3 +17,9 @@ create table ceremonyevents(ceremonyid serial primary key not null, eventid seri
 ceremonyevents users 
 
 insert into ceremonyevents(eventid, firstplace, secondplace, thirdplace, time, date, venue, createdby) values ('2', '8', '9', '11', '12:00', '2019-04-10', 'Carioca Arena 3', '10');
+
+registeredathletes table 
+
+create table registeredathletes(registeredathletesid serial primary key, eventid serial references competitionevents(eventid), userid serial references users(userid));
+
+

@@ -30,8 +30,10 @@ module.exports = (router) => {
     router.get('/api/getAthletes', userController.getAthletes)
 
     // Create new Event by Type
-
     router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
+
+    // Get all athlete events
+    router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
 
     // router.get('/user/:userId/tickets', (req, res) => {
     //     res.status(200).send("this is a better endpoint"); // GET user tickets by ID

@@ -13,27 +13,6 @@ const compEventsArrayify = (response) => {
     return newData
 }
 
-const awardEventsArrayify = async (events) => {
-    const eventValues = []
-
-    await Promise.all(events.map(async (event) => {
-      return eventService.getCompetitionEvent(event.eventid)
-        .then((competitionEvent) => {
-          eventValues.push([
-            competitionEvent.sportname,
-            event.venue,
-            event.time,
-            event.date
-          ]);
-        })
-        .catch(err => console.log(err))
-    }));
-
-    return eventValues;
-}
-
-
-
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
@@ -50,6 +29,15 @@ module.exports = {
                 return res.status(200).send(result)
             })
             .catch(err => res.status(404).send({ err }))
+    },
+    getAthleteEvents: (req, res, next) => {
+        const { id } = req.body
+        return eventService.getAthleteEvents(id)
+            .then(response => {
+                console.log(response)
+                return res.status(200).send(response)
+            })
+            .catch(err => res.status(404).send(err))
     },
     getCompetitionEventById: (req, res, next) => {
         const { eventId } = req.params;

@@ -39,38 +39,19 @@ module.exports = {
               return resolve(result);
             })
             .catch(err => reject(err))
-            
-
-
-
-
-            // let compEvents = []
-            // let awardEvents = []
-            // db.select('*').from('competitionevents')
-            //     .then(data => {
-            //         compEvents = data
-            //     })
-            //     .then(() => {
-            //         return db.select('*').from('ceremonyevents') // dont use stars
-            //     })
-            //     .then(ceremonyEvents => {
-            //         awardEvents = ceremonyEvents
-            //     })
-            //     .then(() => {
-            //         const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
-
-            //         const allEvents = ticketService.db.events
-            //         const result = {
-            //             compEvents,
-            //             awardEvents,
-            //             autoEvents,
-            //             allEvents
-            //         }
-            //         return resolve(result);
-            //     })
-            //     .catch(err => reject(err))
-
         })
+    },
+    getAthleteEvents: (userid) => {
+      return new Promise((resolve, reject) => {
+        db.select('*').from('registeredathletes').where('userid', userid)
+        .then(result => {
+          console.log(result)
+        })
+        .catch(err => {
+          console.log(err)
+          return reject(err)
+        })
+      })
     },
     getCompetitionEvent: (eventId) => {
         return new Promise((resolve, reject) => {
