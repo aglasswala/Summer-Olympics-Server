@@ -20,12 +20,15 @@ module.exports = {
                 const compEvents = compEventsArrayify(response.compEvent)
                 const autoEvents = compEventsArrayify(response.autoEvents)
                 const awardEvents = compEventsArrayify(response.ceremonyEvents) 
+
                 const result = {
                     compEvents,
                     awardEvents,
                     autoEvents,
                     allEvents: response.allEvents
                 }
+                const dateString = new Date(compEvents[0][3]).toString();
+                console.log(dateString.substring(4, 11) );
                 return res.status(200).send(result)
             })
             .catch(err => res.status(404).send({ err }))

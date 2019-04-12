@@ -65,13 +65,14 @@ module.exports = {
     },
     createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
+          const dateString = Date(date).toString();
             const compEvent = {
                 _id: uuidv1(),
                 name: nameOfEvent,
                 registeredTickets: [],
                 athletes: registeredAthletes,
                 time: time,
-                date: date,
+                date: dateString,
                 stadium: stadium,
                 location,
                 type: "competition",
