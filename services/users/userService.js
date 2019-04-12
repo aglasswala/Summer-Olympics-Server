@@ -25,7 +25,11 @@ module.exports = {
                   .then(user => {
                     return resolve(user[0])
                   })
-                  .catch(err => reject(err))
+                  .catch(err => {
+                    return reject(err)
+                  })
+                } else {
+                  return reject()
                 }
               })
         })

@@ -14,7 +14,7 @@ module.exports = {
                     user
                 })
             })
-            .catch(err => res.status(404).send({err: er}));
+            .catch(err => res.status(404).send({err: err}));
     },
     getUserById: (req, res, next) => {
         const { id } = req.body
