@@ -43,14 +43,13 @@ module.exports = {
     },
     getAthleteEvents: (userid) => {
       return new Promise((resolve, reject) => {
-        db.select('*').from('registeredathletes').where('userid', userid)
+        db('registeredathletes')
+        .join('competitionevents', 'competitionevents.eventid', '=', 'registeredathletes.eventid')
+        .select('*')
         .then(result => {
-          console.log(result)
+          return resolve(result)
         })
-        .catch(err => {
-          console.log(err)
-          return reject(err)
-        })
+        .catch(err => reject(err))
       })
     },
     getCompetitionEvent: (eventId) => {

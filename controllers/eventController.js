@@ -34,8 +34,8 @@ module.exports = {
         const { id } = req.body
         return eventService.getAthleteEvents(id)
             .then(response => {
-                console.log(response)
-                return res.status(200).send(response)
+                const allEvents = compEventsArrayify(response)
+                return res.status(200).send({response: allEvents})
             })
             .catch(err => res.status(404).send(err))
     },
