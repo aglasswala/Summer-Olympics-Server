@@ -13,19 +13,32 @@ const compEventsArrayify = (response) => {
     return newData
 }
 
+const fixingDates = (event) => {
+    let events = event;
+    for(let b = 0; b < events.length; b++){
+        events[b][3] = new Date(events[b][3]).toString().substring(4,15);
+    }
+    return events;
+}
+
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
             .then(response => {
-                const compEvents = compEventsArrayify(response.compEvent)
-                const autoEvents = compEventsArrayify(response.autoEvents)
-                const awardEvents = compEventsArrayify(response.ceremonyEvents) 
+                let compEvents = compEventsArrayify(response.compEvent)
+                compEvents = fixingDates(compEvents);
+                let autoEvents = compEventsArrayify(response.autoEvents)
+                autoEvents = fixingDates(autoEvents);
+                let awardEvents = compEventsArrayify(response.ceremonyEvents)
+                awardEvents = fixingDates(awardEvents);
+                
                 const result = {
                     compEvents,
                     awardEvents,
                     autoEvents,
                     allEvents: response.allEvents
                 }
+                
                 return res.status(200).send(result)
             })
             .catch(err => res.status(404).send({ err }))
