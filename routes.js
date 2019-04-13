@@ -15,16 +15,25 @@ module.exports = (router) => {
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)
-    router.get('/events/:eventId', eventController.getEventById) // GET events by Id
+    // router.get('/events/:eventId', eventController.getEventById) // GET events by Id
 
-    router.post('/events', eventController.createEvent) // POST new Event
+    // router.post('/events', eventController.createEvent) // POST new Event
 
     // Login information
     router.post('/api/login', userController.loginUser)
-    router.get('/api/login', userController.getUserById)
+    router.post('/api/getUser', userController.getUserById)
 
     // Register information
     router.post('/api/register', userController.registerUser)
+
+    // Get Athletes
+    router.get('/api/getAthletes', userController.getAthletes)
+
+    // Create new Event by Type
+    router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
+
+    // Get all athlete events
+    router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
 
     // router.get('/user/:userId/tickets', (req, res) => {
     //     res.status(200).send("this is a better endpoint"); // GET user tickets by ID

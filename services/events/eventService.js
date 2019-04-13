@@ -1,34 +1,85 @@
 const ticketService = require('../ticket/ticketService')
+const knex = require('knex');
 const uuidv1 = require('uuid/v1');
+
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: '1234',
+    database: 'postgres'
+  }
+})
+
 
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
-            return resolve(ticketService.db.events);
+          let compEvent = []
+          let ceremonyEvents = [] 
+          db.select('sportname', 'date', 'time', 'venue').from('competitionevents')
+            .then(allCompEvents => {
+              compEvent = allCompEvents
+              return db('competitionevents')
+                      .join('ceremonyevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+                      .select('sportname', 'ceremonyevents.time', 'ceremonyevents.date', 'ceremonyevents.venue')
+            })
+            .then(ceremEvents => {
+              ceremonyEvents = ceremEvents
+              const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
+
+              const allEvents = ticketService.db.events
+              const result = {
+                  compEvent,
+                  ceremonyEvents,
+                  autoEvents,
+                  allEvents
+              }
+              return resolve(result);
+            })
+            .catch(err => reject(err))
         })
     },
-    getEvent: (eventId) => {
+    getAthleteEvents: (userid) => {
+      return new Promise((resolve, reject) => {
+        db('registeredathletes')
+        .join('competitionevents', 'competitionevents.eventid', '=', 'registeredathletes.eventid')
+        .select('*')
+        .then(result => {
+          return resolve(result)
+        })
+        .catch(err => reject(err))
+      })
+    },
+    getCompetitionEvent: (eventId) => {
         return new Promise((resolve, reject) => {
-            const getID =  ticketService.db.events.find(events => events._id === eventId)
-            return resolve(getID);
+            db('competitionevents')
+              .join('ceremonyevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+              .select('sportname', 'ceremonyevents.time', 'ceremonyevents.date', 'ceremonyevents.venue')
+                .then(data => {
+                  return resolve(data[0])
+                })
+                .catch(err => reject(err));
         })
     },
-    createEvent: (nameOfEvent, time, athletes, type, userId) => {
+    createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
-            const newEvent = {
-                _id: uuid,
-                nameOfEvent: nameOfEvent,
-                time: time,
+          const dateString = Date(date).toString();
+            const compEvent = {
+                _id: uuidv1(),
+                name: nameOfEvent,
                 registeredTickets: [],
-                numberOfAttendees: 0,
-                athletes: athletes,
-                results: [],
-                type: type,
-                createdBy: userId
+                athletes: registeredAthletes,
+                time: time,
+                date: dateString,
+                stadium: stadium,
+                location,
+                type: "competition",
+                createdBy: createdBy
             }
-            ticketService.db.events.push(newEvent);
-            return resolve(newEvent); 
+            ticketService.db.events.push(compEvent)
+            return resolve(compEvent)
         })
-            
-    }
+    },
 }

@@ -1,39 +1,71 @@
 const eventService = require('../services/events/eventService')
 
+const compEventsArrayify = (response) => {
+    let newData = []
+    for(let i = 0; i < response.length; i++) {
+        newData.push([
+            response[i].sportname,
+            response[i].venue,
+            response[i].time,
+            response[i].date
+        ])
+    }
+    return newData
+}
+
+const fixingDates = (event) => {
+    let events = event;
+    for(let b = 0; b < events.length; b++){
+        events[b][3] = new Date(events[b][3]).toString().substring(4,15);
+    }
+    return events;
+}
+
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
             .then(response => {
-                let newData = []
-                for(let i = 0; i < response.length; i++) {
-                    newData.push({
-                        name: response[i].name,
-                        stadium: response[i].stadium,
-                        location: response[i].location,
-                        time: response[i].time,
-                        registeredTickets: response[i].registeredTickets.length,
-                    })
+                let compEvents = compEventsArrayify(response.compEvent)
+                compEvents = fixingDates(compEvents);
+                let autoEvents = compEventsArrayify(response.autoEvents)
+                autoEvents = fixingDates(autoEvents);
+                let awardEvents = compEventsArrayify(response.ceremonyEvents)
+                awardEvents = fixingDates(awardEvents);
+                
+                const result = {
+                    compEvents,
+                    awardEvents,
+                    autoEvents,
+                    allEvents: response.allEvents
                 }
-                let output = newData.map((obj) => {
-                    return Object.keys(obj).map((key) => {
-                        return obj[key]
-                    })
-                })
-                output = Array.from(output)
-                return res.status(200).send(output)
+                
+                return res.status(200).send(result)
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({ err }))
     },
-    getEventById: (req, res, next) => {
-        const { eventId } = req.params;
-        return eventService.getEvent(eventId)
-            .then(response => res.status(200).send(response))
-            .catch(err => res.status(404).send(err));
-    },
-    createEvent: (req, res, next) => {
-        const { nameOfEvent, time, athletes, type, userId } = req.body
-        return eventService.createEvent(nameOfEvent, time, athletes, type, userId)
-            .then(response => res.status(200).send(response))
+    getAthleteEvents: (req, res, next) => {
+        const { id } = req.body
+        return eventService.getAthleteEvents(id)
+            .then(response => {
+                const allEvents = compEventsArrayify(response)
+                return res.status(200).send({response: allEvents})
+            })
             .catch(err => res.status(404).send(err))
+    },
+    getCompetitionEventById: (req, res, next) => {
+        const { eventId } = req.params;
+        return eventService.getCompetitionEvent(eventId)
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(404).send(err));
+    },
+    createCompetitionEvent: (req, res, next) => {
+        const { nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy } = req.body
+        return eventService.createCompetitionEvent(nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy)
+            .then(response => {
+                return res.status(200).send({
+                    resp: response
+                })
+            })
+            .catch(err => res.status(400).send({ err }))
     }
 }
