@@ -1,32 +1,36 @@
 const eventService = require('../services/events/eventService')
 
-const arrayify = (response) => {
+const compEventsArrayify = (response) => {
     let newData = []
     for(let i = 0; i < response.length; i++) {
-        newData.push({
-            name: response[i].name,
-            stadium: response[i].stadium,
-            location: response[i].location,
-            time: response[i].time,
-            registeredTickets: response[i].registeredTickets.length,
-        })
+        newData.push([
+            response[i].sportname,
+            response[i].venue,
+            response[i].time,
+            response[i].date
+        ])
     }
-    let output = newData.map((obj) => {
-        return Object.keys(obj).map((key) => {
-            return obj[key]
-        })
-    })
-    output = Array.from(output)
-    return output
+    return newData
+}
+
+const fixingDates = (event) => {
+    let events = event;
+    for(let b = 0; b < events.length; b++){
+        events[b][3] = new Date(events[b][3]).toString().substring(4,15);
+    }
+    return events;
 }
 
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
             .then(response => {
-                const compEvents = arrayify(response.compEvents)
-                const awardEvents = arrayify(response.awardEvents)
-                const autoEvents = arrayify(response.autoEvents)
+                let compEvents = compEventsArrayify(response.compEvent)
+                compEvents = fixingDates(compEvents);
+                let autoEvents = compEventsArrayify(response.autoEvents)
+                autoEvents = fixingDates(autoEvents);
+                let awardEvents = compEventsArrayify(response.ceremonyEvents)
+                awardEvents = fixingDates(awardEvents);
                 
                 const result = {
                     compEvents,
@@ -34,13 +38,23 @@ module.exports = {
                     autoEvents,
                     allEvents: response.allEvents
                 }
+                
                 return res.status(200).send(result)
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({ err }))
     },
-    getEventById: (req, res, next) => {
+    getAthleteEvents: (req, res, next) => {
+        const { id } = req.body
+        return eventService.getAthleteEvents(id)
+            .then(response => {
+                const allEvents = compEventsArrayify(response)
+                return res.status(200).send({response: allEvents})
+            })
+            .catch(err => res.status(404).send(err))
+    },
+    getCompetitionEventById: (req, res, next) => {
         const { eventId } = req.params;
-        return eventService.getEvent(eventId)
+        return eventService.getCompetitionEvent(eventId)
             .then(response => res.status(200).send(response))
             .catch(err => res.status(404).send(err));
     },

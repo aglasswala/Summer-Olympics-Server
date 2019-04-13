@@ -8,13 +8,13 @@ module.exports = {
         // Validate EMAIL and PASSWORD
         return userService.getUser(email, password)
             .then(user => {
-                const data = auth.createJwt(user)
+                const data = auth.createJwt(user.userid)
                 return res.status(200).send({
                     userToken: data,
                     user
                 })
             })
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({err: err}));
     },
     getUserById: (req, res, next) => {
         const { id } = req.body
@@ -25,12 +25,11 @@ module.exports = {
             .catch(err => res.status(404).send("dasdf"))
     },
     registerUser: (req, res, next) => {
-        const { firstName, lastName, street, city, state, zip, email, password, age, phoneNumber } = req.body
-        // TODO VALIDATE and Hash password
-        return userService.registerUser(firstName, lastName, street, city, state, zip, email, password)
-            // .then(result => auth.createJwt(result))
+        const { firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password } = req.body
+        // TODO VALIDATE
+        return userService.registerUser(firstName, lastName, street, city, state, zip, email, phoneNumber, countryOfOrigin, password)
             .then(data => {
-                const token = auth.createJwt(data._id)
+                const token = auth.createJwt(data.userid)
                 return res.status(200).send({
                     user: data,
                     token
