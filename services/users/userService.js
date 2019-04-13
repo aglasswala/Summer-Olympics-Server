@@ -84,8 +84,9 @@ module.exports = {
 
     getAthletes: () => {
         return new Promise((resolve, reject) => {
-            const athletes = ticketService.db.users.filter(user => user.userType === "athlete")
-            return resolve(athletes)
+            db.select('fname', 'lname').from('users').where('usertype', '=', 2)
+              .then(users => resolve(users))
+              .catch(err => reject(users))
         })
     }
 }

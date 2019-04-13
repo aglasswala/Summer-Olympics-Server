@@ -47,12 +47,10 @@ module.exports = {
             })
             .then(autoevents => {
               autoEvents = combineFirstandLast(autoevents)
-              const allEvents = ticketService.db.events
               const result = {
                   compEvent,
                   ceremonyEvents,
-                  autoEvents,
-                  allEvents
+                  autoEvents
               }
               return resolve(result);
             })
