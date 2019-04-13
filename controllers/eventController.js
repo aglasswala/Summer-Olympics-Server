@@ -18,12 +18,25 @@ const fixingDates = (event) => {
     let type;
 
     for(let b = 0; b < events.length; b++){
-        if (events[b][2] <  12){
-            type = " AM";
-        } else {
+        let checktime = parseInt(events[b][2]);
+       if (checktime >= 12) {
+           if(checktime != 12){
+                checktime -= 12;
+                events[b][2] = checktime.toString() + events[b][2].substring(2, 5);
+           }
             type = " PM";
         }
-        events[b][2] = events[b][2].toString().substring(0,5)+ type;
+        else {
+            type = " AM";
+            } 
+
+        if(parseInt(events[b][2]) < 10 && type == " AM"){
+            events[b][2] = events[b][2].toString().substring(1,5) + type;
+        }
+        else {
+            events[b][2] = events[b][2].toString().substring(0,5) + type;
+        }
+        
     }
 
     for(let b = 0; b < events.length; b++){
