@@ -83,13 +83,17 @@ module.exports = {
             .catch(err => res.status(404).send(err));
     },
     createCompetitionEvent: (req, res, next) => {
-        const { nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy } = req.body
-        return eventService.createCompetitionEvent(nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy)
+        const { sportname, newTime, venue, newDate, registeredAthletes, createdBy } = req.body
+        /*return eventService.createCompetitionEvent(nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy)
             .then(response => {
                 return res.status(200).send({
                     resp: response
                 })
             })
-            .catch(err => res.status(400).send({ err }))
+            .catch(err => res.status(400).send({ err }))*/
+            console.log(newTime,newDate);
+
+            // Make sure to delete console logs if u are done checking
+
     }
 }
