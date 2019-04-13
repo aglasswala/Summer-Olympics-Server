@@ -22,4 +22,9 @@ registeredathletes table
 
 create table registeredathletes(registeredathletesid serial primary key, eventid serial references competitionevents(eventid), userid serial references users(userid));
 
+autographevents table 
+
+create table autographevents (autographeventsid serial primary key, time time not null, userid serial references users(userid), date date not null, venue varChar(20) not null);
+
+insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019-05-10', 'Carioca Arean 3');
 
