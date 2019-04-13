@@ -12,12 +12,26 @@ const db = knex({
   }
 })
 
+const combineFirstandLast = (events) => {
+  let eachEvent = []
+  events.map(event => {
+    eachEvent.push({
+      sportname: event.fname + " " + event.lname,
+      time: event.time,
+      date: event.date,
+      venue: event.venue
+    })
+  })
+  return eachEvent
+}
+
 
 module.exports = {
     getAllEvents: () => {
         return new Promise((resolve, reject) => {
           let compEvent = []
-          let ceremonyEvents = [] 
+          let ceremonyEvents = []
+          let autoEvents = []
           db.select('sportname', 'date', 'time', 'venue').from('competitionevents')
             .then(allCompEvents => {
               compEvent = allCompEvents
@@ -27,8 +41,12 @@ module.exports = {
             })
             .then(ceremEvents => {
               ceremonyEvents = ceremEvents
-              const autoEvents = ticketService.db.events.filter(event => event.type === "autographs")
-
+              return db('autographevents')
+                      .join('users', 'autographevents.userid', '=', 'users.userid')
+                      .select('users.fname', 'users.lname', 'autographevents.time', 'autographevents.date', 'autographevents.venue')
+            })
+            .then(autoevents => {
+              autoEvents = combineFirstandLast(autoevents)
               const allEvents = ticketService.db.events
               const result = {
                   compEvent,
@@ -38,7 +56,9 @@ module.exports = {
               }
               return resolve(result);
             })
-            .catch(err => reject(err))
+            .catch(err => {
+              return reject(err)
+            })
         })
     },
     getAthleteEvents: (userid) => {

@@ -38,10 +38,10 @@ module.exports = {
             .then(response => {
                 let compEvents = compEventsArrayify(response.compEvent)
                 compEvents = fixingDates(compEvents);
-                let autoEvents = compEventsArrayify(response.autoEvents)
-                autoEvents = fixingDates(autoEvents);
                 let awardEvents = compEventsArrayify(response.ceremonyEvents)
                 awardEvents = fixingDates(awardEvents);
+                let autoEvents = compEventsArrayify(response.autoEvents)
+                autoEvents = fixingDates(autoEvents);
                 
                 const result = {
                     compEvents,
