@@ -15,6 +15,17 @@ const compEventsArrayify = (response) => {
 
 const fixingDates = (event) => {
     let events = event;
+    let type;
+
+    for(let b = 0; b < events.length; b++){
+        if (events[b][2] <  12){
+            type = " AM";
+        } else {
+            type = " PM";
+        }
+        events[b][2] = events[b][2].toString().substring(0,5)+ type;
+    }
+
     for(let b = 0; b < events.length; b++){
         events[b][3] = new Date(events[b][3]).toString().substring(4,15);
     }
