@@ -81,17 +81,28 @@ module.exports = {
                 .catch(err => reject(err));
         })
     },
-    createCompetitionEvent: (sportname, newTime, venue, newDate, registeredAthletes, createdBy) => {
+    createCompetitionEvent: (sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
-          db('competitionevents').insert({
-            sportname: sportname,
-            time: newTime,
-            date: newDate,
-            venue: venue,
-            userid: createdBy
-          })
-          .then(response => resolve(response))
-          .catcH(err => reject(err))
+          db('competitionevents')
+            .returning('eventid')
+            .insert({
+              sportname: sportname,
+              time: newTime,
+              date: newDate,
+              venue: venue,
+              userid: createdBy
+            })
+            .then(response => {
+              const eventid = response[0]
+              const fieldsToInsert = filteredRegisteredAthletes.map(field => ({
+                eventid: eventid,
+                userid: field
+              }))
+              return db('registeredathletes')
+                      .insert(fieldsToInsert)
+            })
+            .then(response => resolve(response))
+            .catch(err => reject(err))
         })
     },
 }

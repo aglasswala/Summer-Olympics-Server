@@ -84,7 +84,7 @@ module.exports = {
 
     getAthletes: () => {
         return new Promise((resolve, reject) => {
-            db.select('fname', 'lname').from('users').where('usertype', '=', 2)
+            db.select('*').from('users').where('usertype', '=', 2)
               .then(users => resolve(users))
               .catch(err => reject(users))
         })
