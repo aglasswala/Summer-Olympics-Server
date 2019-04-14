@@ -81,7 +81,6 @@ module.exports = {
           })
         })
     },
-
     getAthletes: () => {
         return new Promise((resolve, reject) => {
             db.select('*').from('users').where('usertype', '=', 2)

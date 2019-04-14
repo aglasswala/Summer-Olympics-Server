@@ -63,7 +63,8 @@ module.exports = {
       return new Promise((resolve, reject) => {
         db('registeredathletes')
         .select('*')
-        .where('userid', '=', userid)
+        .where('registeredathletes.userid', '=', userid)
+        .join('competitionevents', 'competitionevents.eventid', '=', 'registeredathletes.eventid')
         .then(result => {
           return resolve(result)
         })
