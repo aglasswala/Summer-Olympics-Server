@@ -73,16 +73,12 @@ module.exports = {
         })
       })
     },
-    getCompetitionEvent: (eventId) => {
-        return new Promise((resolve, reject) => {
-            db('competitionevents')
-              .join('ceremonyevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
-              .select('sportname', 'ceremonyevents.time', 'ceremonyevents.date', 'ceremonyevents.venue')
-                .then(data => {
-                  return resolve(data[0])
-                })
-                .catch(err => reject(err));
-        })
+    getCompEvents: () => {
+      return new Promise((resolve, reject) => {
+        db.select('*').from('competitionevents')
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
     },
     createCompetitionEvent: (sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
@@ -108,4 +104,20 @@ module.exports = {
             .catch(err => reject(err))
         })
     },
+    createCeremonyEvent: (eventid, firstPlace, secondPlace, thirdPlace, newTime, newDate, venue, createdBy) => {
+      return new Promise((resolve, reject) => {
+        db('ceremonyevents').insert({
+          eventid: eventid,
+          firstplace: firstPlace,
+          secondplace: secondPlace,
+          thirdplace: thirdPlace,
+          time: newTime,
+          date: newDate,
+          venue: venue,
+          createdby: createdBy
+        })
+        .then(response => resolve(response))
+        .catch(err => reject(err))
+      })
+    }
 }

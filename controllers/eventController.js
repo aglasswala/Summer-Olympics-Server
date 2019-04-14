@@ -72,11 +72,10 @@ module.exports = {
             })
             .catch(err => res.status(404).send(err))
     },
-    getCompetitionEventById: (req, res, next) => {
-        const { eventId } = req.params;
-        return eventService.getCompetitionEvent(eventId)
+    getCompEvents: (req, res, next) => {
+        return eventService.getCompEvents() 
             .then(response => res.status(200).send(response))
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send({ err: "Not Found" }))
     },
     createCompetitionEvent: (req, res, next) => {
         const { sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy } = req.body
@@ -87,5 +86,11 @@ module.exports = {
                 })
             })
             .catch(err => res.status(400).send({ err: "ERRR" }))
+    },
+    createCeremonyEvent: (req, res, next) => {
+        const { selectedEvent, firstPlace, secondPlace, thirdPlace, newTime, newDate, venue, createdBy } = req.body
+        return eventService.createCeremonyEvent(selectedEvent.eventid, firstPlace.userid, secondPlace.userid, thirdPlace.userid, newTime, newDate, venue, createdBy)
+            .then(response => res.status(200).send({response}))
+            .catch(err => res.status(400).send({err: "failed to add"}))
     }
 }

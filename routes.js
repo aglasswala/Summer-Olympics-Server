@@ -15,6 +15,8 @@ module.exports = (router) => {
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)
+
+    router.get('/api/getCompEvents', eventController.getCompEvents)
     // router.get('/events/:eventId', eventController.getEventById) // GET events by Id
 
     // router.post('/events', eventController.createEvent) // POST new Event
@@ -31,6 +33,7 @@ module.exports = (router) => {
 
     // Create new Event by Type
     router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
+    router.post('/api/createCeremonyEvent', eventController.createCeremonyEvent)
 
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
