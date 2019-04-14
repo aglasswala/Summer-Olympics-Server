@@ -28,3 +28,7 @@ create table autographevents (autographeventsid serial primary key, time time no
 
 insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019-05-10', 'Carioca Arean 3');
 
+
+alter compeitionevents table
+
+alter table competitionevents alter column venue type varChar(255);

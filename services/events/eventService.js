@@ -81,23 +81,17 @@ module.exports = {
                 .catch(err => reject(err));
         })
     },
-    createCompetitionEvent: (nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy) => {
+    createCompetitionEvent: (sportname, newTime, venue, newDate, registeredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
-          const dateString = Date(date).toString();
-            const compEvent = {
-                _id: uuidv1(),
-                name: nameOfEvent,
-                registeredTickets: [],
-                athletes: registeredAthletes,
-                time: time,
-                date: dateString,
-                stadium: stadium,
-                location,
-                type: "competition",
-                createdBy: createdBy
-            }
-            ticketService.db.events.push(compEvent)
-            return resolve(compEvent)
+          db('competitionevents').insert({
+            sportname: sportname,
+            time: newTime,
+            date: newDate,
+            venue: venue,
+            userid: createdBy
+          })
+          .then(response => resolve(response))
+          .catcH(err => reject(err))
         })
     },
 }

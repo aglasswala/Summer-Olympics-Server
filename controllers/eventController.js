@@ -19,24 +19,20 @@ const fixingDates = (event) => {
 
     for(let b = 0; b < events.length; b++){
         let checktime = parseInt(events[b][2]);
-       if (checktime >= 12) {
+        if (checktime >= 12) {
            if(checktime != 12){
                 checktime -= 12;
                 events[b][2] = checktime.toString() + events[b][2].substring(2, 5);
            }
             type = " PM";
-        }
-        else {
+        } else {
             type = " AM";
-            } 
-
+        }
         if(parseInt(events[b][2]) < 10 && type == " AM"){
             events[b][2] = events[b][2].toString().substring(1,5) + type;
-        }
-        else {
+        } else {
             events[b][2] = events[b][2].toString().substring(0,5) + type;
         }
-        
     }
 
     for(let b = 0; b < events.length; b++){
@@ -83,8 +79,8 @@ module.exports = {
             .catch(err => res.status(404).send(err));
     },
     createCompetitionEvent: (req, res, next) => {
-        const { nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy } = req.body
-        return eventService.createCompetitionEvent(nameOfEvent, time, stadium, location, date, registeredAthletes, createdBy)
+        const { sportname, newTime, venue, newDate, registeredAthletes, createdBy } = req.body
+        return eventService.createCompetitionEvent(sportname, newTime, venue, newDate, registeredAthletes, createdBy)
             .then(response => {
                 return res.status(200).send({
                     resp: response
