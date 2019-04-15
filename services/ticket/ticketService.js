@@ -1,6 +1,16 @@
-const uuidv1 = require('uuid/v1');
+const knex = require('knex');
 
-let db = {
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    user: 'postgres',
+    password: '1234',
+    database: 'postgres'
+  }
+})
+
+let database = {
     users: [
         {
             _id: "user1",
@@ -186,45 +196,17 @@ let db = {
 }
 
 module.exports = {
-    getTicket: () => {
+    database,
+    getUserTickets: (id) => {
         return new Promise((resolve, reject) => {
-            return resolve(db.tickets)
+            db
+            .select('*')
+            .from('tickets')
+            .join('competitionevents', 'competitionevents.eventid', '=', 'tickets.eventid')
+            .where('tickets.userid', id)
+            .returning('*')
+            .then(result => resolve(result))
+            .catch(err => reject(err))
         })
-    },
-    // getTicketById: (userId) => {
-    //     return new Promise((resolve, reject) => {
-    //         const filteredArray = db.tickets.filter((object) => {
-    //             return object.userId === userId
-    //         }) 
-
-    //         return resolve(filteredArray)
-    //     })
-    // },
-    buyUserTicket: (userId, eventId, cost) => {
-        return new Promise((resolve, reject) => {
-            const newTicket = {
-                _id: uuid,
-                time: new Date(),
-                cost: cost,
-                eventId: eventId,
-                userID: userId
-            }
-            db.tickets.push(newTicket)
-            const getID =  ticketService.db.events.find(events => events._id === eventId)
-            getID.registeredTickets.push(newTicket._id);
-            return resolve(db.tickets)
-        })
-    },
-    updateTicket: (_id, time, cost, eventId, userId) => {
-        return new Promise((resolve, reject) => {
-            const index = db.tickets.findIndex((obj => obj._id == _id));
-            db.tickets[index].time = time,
-            db.tickets[index].cost = cost,
-            db.tickets[index].eventId = eventId,
-            db.tickets[index].userID = userId
-
-            return resolve(db.tickets);
-        })
-    },
-    db
+    }
 }

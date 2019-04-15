@@ -5,21 +5,14 @@ const eventController = require('./controllers/eventController')
 module.exports = (router) => {
     
     router.get('/', (req, res) => res.status(200).send("OH YEAH"));
-    
-    // TICKETS
-    router.get('/tickets', ticketController.getTicket) 
 
-    router.post('/tickets', ticketController.buyTicket)
-
-    router.put('/tickets', ticketController.updateTicket) 
+    //Tickets 
+    router.post('/api/getUserTickets', ticketController.getUserTickets)
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)
 
     router.get('/api/getCompEvents', eventController.getCompEvents)
-    // router.get('/events/:eventId', eventController.getEventById) // GET events by Id
-
-    // router.post('/events', eventController.createEvent) // POST new Event
 
     // Login information
     router.post('/api/login', userController.loginUser)
@@ -39,9 +32,4 @@ module.exports = (router) => {
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
 
-    // router.get('/user/:userId/tickets', (req, res) => {
-    //     res.status(200).send("this is a better endpoint"); // GET user tickets by ID
-    // })
-
-    // router.delete('/users/:userId', userController.deleteUser) // Deletes User
 };
