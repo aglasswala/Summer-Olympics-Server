@@ -92,5 +92,11 @@ module.exports = {
         return eventService.createCeremonyEvent(selectedEvent.eventid, firstPlace.userid, secondPlace.userid, thirdPlace.userid, newTime, newDate, venue, createdBy)
             .then(response => res.status(200).send({response}))
             .catch(err => res.status(400).send({err: "failed to add"}))
+    },
+    createAutographEvent: (req, res, next) => {
+        const { athleteUserId, newTime, venue, newDate } = req.body
+        return eventService.createAutographEvent(athleteUserId, newTime, venue, newDate)
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(400).send({err}))
     }
 }

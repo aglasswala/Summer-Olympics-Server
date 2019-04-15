@@ -119,5 +119,18 @@ module.exports = {
         .then(response => resolve(response))
         .catch(err => reject(err))
       })
+    },
+    createAutographEvent: (athleteUserId, newTime, venue, newDate) => {
+      return new Promise((resolve, reject) => {
+        db('autographevents')
+          .insert({
+            userid: athleteUserId,
+            date: newDate,
+            time: newTime,
+            venue: venue
+          })
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
     }
 }

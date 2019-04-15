@@ -34,6 +34,7 @@ module.exports = (router) => {
     // Create new Event by Type
     router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
     router.post('/api/createCeremonyEvent', eventController.createCeremonyEvent)
+    router.post('/api/createAutographEvent', eventController.createAutographEvent)
 
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
