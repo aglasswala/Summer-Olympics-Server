@@ -31,4 +31,8 @@ insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019
 
 alter compeitionevents table
 
-alter table competitionevents alter column venue type varChar(255); // do the same with ceremony events
+alter table competitionevents alter column venue type varChar(255); // do the same with ceremony events and autograph
+
+// create ticket table
+
+create table tickets(ticketid serial primary key, timestamp time not null, cost numeric not null, eventid serial references competitionevents(eventid), userid serial references users(userid));
