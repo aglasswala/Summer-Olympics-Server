@@ -8,6 +8,7 @@ module.exports = (router) => {
 
     //Tickets 
     router.post('/api/getUserTickets', ticketController.getUserTickets)
+    router.post('/api/BuyTickets', ticketController.buyTickets)
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)

@@ -208,5 +208,19 @@ module.exports = {
             .then(result => resolve(result))
             .catch(err => reject(err))
         })
+    },
+    buyTickets: (event, timestamp, cost, userid) => {
+      return new Promise((resolve, reject) => {
+        db('tickets')
+          .returning("*")
+          .insert({
+            timestamp: timestamp,
+            cost: cost,
+            eventid: event,
+            userid: userid
+          })
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
     }
 }
