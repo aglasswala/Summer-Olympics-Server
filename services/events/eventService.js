@@ -66,6 +66,21 @@ module.exports = {
         .where('registeredathletes.userid', '=', userid)
         .join('competitionevents', 'competitionevents.eventid', '=', 'registeredathletes.eventid')
         .then(result => {
+          let allEvents = {}
+          return db('ceremonyevents')
+            .select('*')
+            .where('ceremonyevents.firstplace', '=', userid)
+            .orWhere('ceremonyevents.secondplace', '=', userid)
+            .orWhere('ceremonyevents.thirdplace', '=', userid)
+            .join('competitionevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+            .then(ceremonyEvents => {
+              allEvents.ceremonyEvents = ceremonyEvents
+              allEvents.result = result
+              return allEvents
+            })
+            .catch(err => console.log(err))
+        })
+        .then(result => {
           return resolve(result)
         })
         .catch(err => {

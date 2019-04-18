@@ -67,8 +67,10 @@ module.exports = {
         const { id } = req.body
         return eventService.getAthleteEvents(id)
             .then(response => {
-                const allEvents = compEventsArrayify(response)
-                return res.status(200).send({response: allEvents})
+                let allEvents = {} 
+                allEvents.ceremonyEvents = compEventsArrayify(response.ceremonyEvents)
+                allEvents.response = compEventsArrayify(response.result)
+                return res.status(200).send(allEvents)
             })
             .catch(err => res.status(404).send(err))
     },
