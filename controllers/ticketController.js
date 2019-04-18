@@ -1,27 +1,16 @@
 const ticketService = require('../services/ticket/ticketService')
 
 module.exports = {
-    getTicket: (req, res, next) => {
-        return ticketService.getTicket()
+    getUserTickets: (req, res, next) => {
+        const { id } = req.body
+        return ticketService.getUserTickets(id) 
             .then(response => res.status(200).send(response))
-            .catch(err => res.status(404).send(err));
+            .catch(err => res.status(404).send(err))
     },
-    // getTicketById: (req, res, next) => {
-    //     const { userId } = req.params
-    //     return ticketService.getTicketById(userId)
-    //     .then(response => res.status(200).send(response))
-    //     .catch(next) 
-    // },
-    buyTicket: (req, res, next) => {
-        const { userId, eventId, cost } = req.body;
-        return ticketService.buyUserTicket(userId, eventId, cost)
-            .then(response => res.status(200).send(response))
-            .catch(err => res.status(404).send(err));
-    },
-    updateTicket: (req, res, next) => {
-        const { _id, time, cost, eventId, userId } = req.body;
-        return ticketService.updateTicket(_id, time, cost, eventId, userId)
-            .then(response => res.status(200).send(response))
-            .catch(err => res.status(404).send(err));
+    buyTickets: (req, res, next) => {
+      const { event, timestamp, cost, userid } = req.body
+      return ticketService.buyTickets(event, timestamp, cost, userid)
+        .then(response => res.status(200).send(response))
+        .catch(err => res.status(400).send({err: "NOT FOUND"}))
     }
 }
