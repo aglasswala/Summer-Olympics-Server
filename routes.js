@@ -15,6 +15,8 @@ module.exports = (router) => {
 
     router.get('/api/getCompEvents', eventController.getCompEvents)
 
+    router.post('/api/deleteEvent', eventController.deleteEvent)
+
     // Login information
     router.post('/api/login', userController.loginUser)
     router.post('/api/getUser', userController.getUserById)

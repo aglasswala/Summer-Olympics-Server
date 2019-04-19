@@ -147,5 +147,39 @@ module.exports = {
           .then(result => resolve(result))
           .catch(err => reject(err))
       })
+    },
+    deleteEvent: (eventid, userid) => {
+      return new Promise((resolve, reject) => {
+        db('registeredathletes')
+          .select('*')
+          .where('eventid', eventid)
+          .del()
+          .then(result => {
+            return db('tickets')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
+            return db('ceremonyevents')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
+            return db('competitionevents')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => resolve(result))
+          .catch(err => {
+            console.log(err)
+            return reject(err)
+          })
+      })
     }
 }
