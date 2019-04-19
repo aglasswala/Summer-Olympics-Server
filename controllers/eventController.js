@@ -79,6 +79,11 @@ module.exports = {
             .then(response => res.status(200).send(response))
             .catch(err => res.status(404).send({ err: "Not Found" }))
     },
+    getCereEvents: (req, res, next) => {
+        return eventService.getCereEvents()
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(404).send({ err: "Not Found" }))
+    },
     createCompetitionEvent: (req, res, next) => {
         const { sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy } = req.body
         return eventService.createCompetitionEvent(sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy)

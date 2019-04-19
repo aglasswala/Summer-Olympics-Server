@@ -95,6 +95,13 @@ module.exports = {
           .catch(err => reject(err))
       })
     },
+    getCereEvents: () => {
+      return new Promise((resolve, reject) => {
+        db.select('*').from('ceremonyevents')
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
+    },
     createCompetitionEvent: (sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
           db('competitionevents')
