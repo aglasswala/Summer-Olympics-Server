@@ -102,6 +102,15 @@ module.exports = {
           .catch(err => reject(err))
       })
     },
+    getAutographEvents: () => {
+      return new Promise((resolve, reject) => {
+        db('autographevents')
+          .select('*')
+          .join('users', 'users.userid', '=', 'autographevents.userid')
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
+    },
     createCompetitionEvent: (sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy) => {
         return new Promise((resolve, reject) => {
           db('competitionevents')
@@ -187,6 +196,16 @@ module.exports = {
             console.log(err)
             return reject(err)
           })
+      })
+    },
+    deleteAutographEvents: (eventid, userid) => {
+      return new Promise((resolve, reject) => {
+        db('autographevents')
+          .select('*')
+          .where('autographeventsid', eventid)
+          .del()
+          .then(result => resolve(result))
+          .catch(err => reject(err))
       })
     }
 }

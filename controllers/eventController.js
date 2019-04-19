@@ -84,6 +84,11 @@ module.exports = {
             .then(response => res.status(200).send(response))
             .catch(err => res.status(404).send({ err: "Not Found" }))
     },
+    getAutographEvents: (req, res, next) => {
+        return eventService.getAutographEvents()
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(404).send({ err: "Not Found" }))
+    },
     createCompetitionEvent: (req, res, next) => {
         const { sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy } = req.body
         return eventService.createCompetitionEvent(sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy)
@@ -109,6 +114,12 @@ module.exports = {
     deleteEvent: (req, res, next) => {
         const { eventid, userid } = req.body
         return eventService.deleteEvent(eventid, userid)
+            .then(result => res.status(200).send({result}))
+            .catch(err => res.status(400).send(err))
+    },
+    deleteAutographEvents: (req, res, next) => {
+        const { eventid, userid } = req.body
+        return eventService.deleteAutographEvents(eventid, userid)
             .then(result => res.status(200).send({result}))
             .catch(err => res.status(400).send(err))
     }
