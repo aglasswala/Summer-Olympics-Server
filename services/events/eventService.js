@@ -66,6 +66,21 @@ module.exports = {
         .where('registeredathletes.userid', '=', userid)
         .join('competitionevents', 'competitionevents.eventid', '=', 'registeredathletes.eventid')
         .then(result => {
+          let allEvents = {}
+          return db('ceremonyevents')
+            .select('*')
+            .where('ceremonyevents.firstplace', '=', userid)
+            .orWhere('ceremonyevents.secondplace', '=', userid)
+            .orWhere('ceremonyevents.thirdplace', '=', userid)
+            .join('competitionevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+            .then(ceremonyEvents => {
+              allEvents.ceremonyEvents = ceremonyEvents
+              allEvents.result = result
+              return allEvents
+            })
+            .catch(err => console.log(err))
+        })
+        .then(result => {
           return resolve(result)
         })
         .catch(err => {
@@ -76,6 +91,22 @@ module.exports = {
     getCompEvents: () => {
       return new Promise((resolve, reject) => {
         db.select('*').from('competitionevents')
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
+    },
+    getCereEvents: () => {
+      return new Promise((resolve, reject) => {
+        db.select('*').from('ceremonyevents')
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
+    },
+    getAutographEvents: () => {
+      return new Promise((resolve, reject) => {
+        db('autographevents')
+          .select('*')
+          .join('users', 'users.userid', '=', 'autographevents.userid')
           .then(result => resolve(result))
           .catch(err => reject(err))
       })
@@ -129,6 +160,50 @@ module.exports = {
             time: newTime,
             venue: venue
           })
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
+    },
+    deleteEvent: (eventid, userid) => {
+      return new Promise((resolve, reject) => {
+        db('registeredathletes')
+          .select('*')
+          .where('eventid', eventid)
+          .del()
+          .then(result => {
+            return db('tickets')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
+            return db('ceremonyevents')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
+            return db('competitionevents')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => resolve(result))
+          .catch(err => {
+            console.log(err)
+            return reject(err)
+          })
+      })
+    },
+    deleteAutographEvents: (eventid, userid) => {
+      return new Promise((resolve, reject) => {
+        db('autographevents')
+          .select('*')
+          .where('autographeventsid', eventid)
+          .del()
           .then(result => resolve(result))
           .catch(err => reject(err))
       })

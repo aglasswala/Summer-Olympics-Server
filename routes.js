@@ -12,8 +12,12 @@ module.exports = (router) => {
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)
-
     router.get('/api/getCompEvents', eventController.getCompEvents)
+    router.get('/api/getCereEvents', eventController.getCereEvents)
+    router.get('/api/getAutographEvents', eventController.getAutographEvents)
+
+    router.post('/api/deleteEvent', eventController.deleteEvent)
+    router.post('/api/deleteAutographEvents', eventController.deleteAutographEvents)
 
     // Login information
     router.post('/api/login', userController.loginUser)
