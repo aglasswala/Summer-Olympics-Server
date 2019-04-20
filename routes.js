@@ -5,19 +5,19 @@ const eventController = require('./controllers/eventController')
 module.exports = (router) => {
     
     router.get('/', (req, res) => res.status(200).send("OH YEAH"));
-    
-    // TICKETS
-    router.get('/tickets', ticketController.getTicket) 
 
-    router.post('/tickets', ticketController.buyTicket)
-
-    router.put('/tickets', ticketController.updateTicket) 
+    //Tickets 
+    router.post('/api/getUserTickets', ticketController.getUserTickets)
+    router.post('/api/BuyTickets', ticketController.buyTickets)
 
     // EVENTS
     router.get('/api/events', eventController.getAllEvents)
-    // router.get('/events/:eventId', eventController.getEventById) // GET events by Id
+    router.get('/api/getCompEvents', eventController.getCompEvents)
+    router.get('/api/getCereEvents', eventController.getCereEvents)
+    router.get('/api/getAutographEvents', eventController.getAutographEvents)
 
-    // router.post('/events', eventController.createEvent) // POST new Event
+    router.post('/api/deleteEvent', eventController.deleteEvent)
+    router.post('/api/deleteAutographEvents', eventController.deleteAutographEvents)
 
     // Login information
     router.post('/api/login', userController.loginUser)
@@ -31,13 +31,10 @@ module.exports = (router) => {
 
     // Create new Event by Type
     router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
+    router.post('/api/createCeremonyEvent', eventController.createCeremonyEvent)
+    router.post('/api/createAutographEvent', eventController.createAutographEvent)
 
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
 
-    // router.get('/user/:userId/tickets', (req, res) => {
-    //     res.status(200).send("this is a better endpoint"); // GET user tickets by ID
-    // })
-
-    // router.delete('/users/:userId', userController.deleteUser) // Deletes User
 };
