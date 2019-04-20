@@ -128,10 +128,19 @@ module.exports = {
                 eventid: eventid,
                 userid: field
               }))
-              return db('registeredathletes')
-                      .insert(fieldsToInsert)
+              const athleteNotifications = filteredRegisteredAthletes.map(athlete => ({
+                eventid: eventid,
+                userid: athlete,
+                body: "You're registered for a new event"
+              }))
+              return db('notifications')
+                      .insert(athleteNotifications)
                       .then(() => {
-                        return eventid
+                        return db('registeredathletes')
+                                .insert(fieldsToInsert)
+                                .then(() => {
+                                  return eventid
+                                })
                       })
             })
             .then((eventid) => {
