@@ -130,6 +130,27 @@ module.exports = {
               }))
               return db('registeredathletes')
                       .insert(fieldsToInsert)
+                      .then(() => {
+                        return eventid
+                      })
+            })
+            .then((eventid) => {
+              return db.select('*').from('users')
+                      .then(users => {
+                        return {
+                          users,
+                          eventid
+                        }
+                      })
+            })
+            .then(result => {
+              const notifications = result.users.map(user => ({
+                userid: user.userid,
+                eventid: result.eventid,
+                body: "Check out the new event"
+              }))
+              return db('notifications')
+                      .insert(notifications)
             })
             .then(response => resolve(response))
             .catch(err => reject(err))
@@ -179,6 +200,13 @@ module.exports = {
           })
           .then(result => {
             return db('ceremonyevents')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
+            return db('notifications')
                     .select('*')
                     .where('eventid', eventid)
                     .del()

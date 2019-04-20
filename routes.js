@@ -37,4 +37,7 @@ module.exports = (router) => {
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)
 
+    router.post('/api/getNotifications', userController.getNotifications)
+    router.post('/api/deleteNotifications', userController.deleteNotifications)
+
 };
