@@ -178,18 +178,6 @@ module.exports = {
             venue: venue,
             createdby: createdBy
           })
-          .then(result => {
-            return db.select('*').from('users')
-          })
-          .then(users => {
-            const notifications = users.map(user => ({
-              userid: user.userid,
-              eventid: eventid,
-              body: "Check out who placed"
-            }))
-            return db('notifications')
-                    .insert(notifications)
-          })
           .then(response => resolve(response))
           .catch(err => reject(err))
       })
