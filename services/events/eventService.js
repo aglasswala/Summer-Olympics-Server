@@ -167,18 +167,31 @@ module.exports = {
     },
     createCeremonyEvent: (eventid, firstPlace, secondPlace, thirdPlace, newTime, newDate, venue, createdBy) => {
       return new Promise((resolve, reject) => {
-        db('ceremonyevents').insert({
-          eventid: eventid,
-          firstplace: firstPlace,
-          secondplace: secondPlace,
-          thirdplace: thirdPlace,
-          time: newTime,
-          date: newDate,
-          venue: venue,
-          createdby: createdBy
-        })
-        .then(response => resolve(response))
-        .catch(err => reject(err))
+        db('ceremonyevents')
+          .insert({
+            eventid: eventid,
+            firstplace: firstPlace,
+            secondplace: secondPlace,
+            thirdplace: thirdPlace,
+            time: newTime,
+            date: newDate,
+            venue: venue,
+            createdby: createdBy
+          })
+          .then(result => {
+            return db.select('*').from('users')
+          })
+          .then(users => {
+            const notifications = users.map(user => ({
+              userid: user.userid,
+              eventid: eventid,
+              body: "Check out who placed"
+            }))
+            return db('notifications')
+                    .insert(notifications)
+          })
+          .then(response => resolve(response))
+          .catch(err => reject(err))
       })
     },
     createAutographEvent: (athleteUserId, newTime, venue, newDate) => {
@@ -232,6 +245,8 @@ module.exports = {
           .catch(err => reject(err))
       })
     },
+    // Notification for autograph doesn't work because the eventid in the notification table is tied to a competition event 
+    // not a autograph event. 
     deleteAutographEvents: (eventid, userid) => {
       return new Promise((resolve, reject) => {
         db('autographevents')
