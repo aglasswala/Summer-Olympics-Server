@@ -229,10 +229,7 @@ module.exports = {
                     .catch(err => console.log(err))
           })
           .then(result => resolve(result))
-          .catch(err => {
-            console.log(err)
-            return reject(err)
-          })
+          .catch(err => reject(err))
       })
     },
     deleteAutographEvents: (eventid, userid) => {
