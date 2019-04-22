@@ -244,5 +244,34 @@ module.exports = {
           .then(result => resolve(result))
           .catch(err => reject(err))
       })
+    },
+    editEvent: (updatedEvent) => {
+      return new Promise((resolve, reject) => {
+        return db('competitionevents')
+                .where('eventid', updatedEvent.eventid)
+                .select('*')
+                .update({
+                  sportname: updatedEvent.sportname,
+                  venue: updatedEvent.venue,
+                  time: updatedEvent.time,
+                  date: updatedEvent.date,
+                })
+                .then(result => {
+                  return db('registeredathletes')
+                          .select('*')
+                          .where('eventid', updatedEvent.eventid)
+                })
+                .then((athletes) => {
+                  const notifications = athletes.map(user => ({
+                    userid: user.userid,
+                    eventid: updatedEvent.eventid,
+                    body: "Your event was updated"
+                  }))
+                  return db('notifications')
+                          .insert(notifications)
+                })
+                .catch(err => console.log(err))
+
+      })
     }
 }

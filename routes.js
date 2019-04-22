@@ -19,20 +19,21 @@ module.exports = (router) => {
     router.post('/api/deleteEvent', eventController.deleteEvent)
     router.post('/api/deleteAutographEvents', eventController.deleteAutographEvents)
 
+    router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
+    router.post('/api/createCeremonyEvent', eventController.createCeremonyEvent)
+    router.post('/api/createAutographEvent', eventController.createAutographEvent)
+
+    router.post('/api/editEvent', eventController.editEvent)
+
     // Login information
     router.post('/api/login', userController.loginUser)
     router.post('/api/getUser', userController.getUserById)
-
-    // Register information
     router.post('/api/register', userController.registerUser)
 
     // Get Athletes
     router.get('/api/getAthletes', userController.getAthletes)
+    router.post('/api/getRegisteredAthletes', userController.getRegisteredAthletes)
 
-    // Create new Event by Type
-    router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent)
-    router.post('/api/createCeremonyEvent', eventController.createCeremonyEvent)
-    router.post('/api/createAutographEvent', eventController.createAutographEvent)
 
     // Get all athlete events
     router.post('/api/getAthleteEvents', eventController.getAthleteEvents)

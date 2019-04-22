@@ -44,6 +44,12 @@ module.exports = {
             }))
             .catch(err => res.status(400).send({err}))
     },
+    getRegisteredAthletes: (req, res, next) => {
+        const { eventid } = req.body
+        return userService.getRegisteredAthletes(eventid)
+            .then(result => res.status(200).send(result))
+            .catch(err => res.status(404).send(err))
+    },
     getNotifications: (req, res, next) => {
         const { userid } = req.body
         return userService.getNotifications(userid)

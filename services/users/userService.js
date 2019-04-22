@@ -88,6 +88,16 @@ module.exports = {
               .catch(err => reject(users))
         })
     },
+    getRegisteredAthletes: (eventid) => {
+      return new Promise((resolve, reject) => {
+        db('registeredathletes')
+          .select('*')
+          .where('eventid', eventid)
+          .join('users', 'users.userid', '=', 'registeredathletes.userid')
+          .then(response => resolve(response))
+          .catch(err => reject(err))
+      })
+    },
     getNotifications: (userid) => {
       return new Promise((resolve, reject) => {
         db('notifications')
