@@ -41,6 +41,49 @@ const fixingDates = (event) => {
     return events;
 }
 
+const fixingTime = (time) => {
+  let checktime = parseInt(time);
+    if (checktime < 12 && time.includes("AM")) {
+      return checktime+":00:00";
+    } else if (checktime === 12) {
+      return checktime = checktime.toString() + ":00:00";
+    } else {
+      checktime += 12;
+      checktime = checktime.toString() + ":00:00";
+      return checktime;
+    }
+}
+
+const changeAMPMto24Hours = (date) => {
+  let newMonth = date.getMonth() + 1;
+  let newDay;
+  let newYear = date.getFullYear().toString();
+  
+  if(date.getMonth()  + 1 < 10){
+    newMonth = "0"+ newMonth.toString()
+  } else {
+    newMonth = newMonth.toString();
+  }
+  
+  if(date.getDate() < 10){
+    newDay = "0"+ date.getDate().toString();
+  } else {
+    newDay = date.getDate().toString();
+  }
+  return (newYear+"-"+newMonth+"-"+newDay);
+}
+
+const updateEventTimesandDates = (selectedEvent) => {
+    let updatedEvent = {}
+    updatedEvent.sportname = selectedEvent.sportname
+    updatedEvent.venue = selectedEvent.venue
+    updatedEvent.time = fixingTime(selectedEvent.time)
+    updatedEvent.date = changeAMPMto24Hours(new Date(selectedEvent.date))
+    updatedEvent.eventid = selectedEvent.eventid
+    updatedEvent.userid = selectedEvent.userid
+    return updatedEvent
+}
+
 module.exports = {
     getAllEvents: (req, res, next) => {
         return eventService.getAllEvents()
@@ -122,5 +165,12 @@ module.exports = {
         return eventService.deleteAutographEvents(eventid, userid)
             .then(result => res.status(200).send({result}))
             .catch(err => res.status(400).send(err))
+    },
+    editEvent: (req, res, next) => {
+        const { selectedEvent } = req.body
+        const updatedEvent = updateEventTimesandDates(selectedEvent)
+        return eventService.editEvent(updatedEvent)
+            .then(result => res.status(200).send(result))
+            .catch(err => res.status(404).send(err))
     }
 }

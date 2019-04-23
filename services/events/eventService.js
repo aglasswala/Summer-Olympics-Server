@@ -128,8 +128,38 @@ module.exports = {
                 eventid: eventid,
                 userid: field
               }))
-              return db('registeredathletes')
-                      .insert(fieldsToInsert)
+              const athleteNotifications = filteredRegisteredAthletes.map(athlete => ({
+                eventid: eventid,
+                userid: athlete,
+                body: "You're registered for a new event"
+              }))
+              return db('notifications')
+                      .insert(athleteNotifications)
+                      .then(() => {
+                        return db('registeredathletes')
+                                .insert(fieldsToInsert)
+                                .then(() => {
+                                  return eventid
+                                })
+                      })
+            })
+            .then((eventid) => {
+              return db.select('*').from('users')
+                      .then(users => {
+                        return {
+                          users,
+                          eventid
+                        }
+                      })
+            })
+            .then(result => {
+              const notifications = result.users.map(user => ({
+                userid: user.userid,
+                eventid: result.eventid,
+                body: "Check out the new event"
+              }))
+              return db('notifications')
+                      .insert(notifications)
             })
             .then(response => resolve(response))
             .catch(err => reject(err))
@@ -137,18 +167,19 @@ module.exports = {
     },
     createCeremonyEvent: (eventid, firstPlace, secondPlace, thirdPlace, newTime, newDate, venue, createdBy) => {
       return new Promise((resolve, reject) => {
-        db('ceremonyevents').insert({
-          eventid: eventid,
-          firstplace: firstPlace,
-          secondplace: secondPlace,
-          thirdplace: thirdPlace,
-          time: newTime,
-          date: newDate,
-          venue: venue,
-          createdby: createdBy
-        })
-        .then(response => resolve(response))
-        .catch(err => reject(err))
+        db('ceremonyevents')
+          .insert({
+            eventid: eventid,
+            firstplace: firstPlace,
+            secondplace: secondPlace,
+            thirdplace: thirdPlace,
+            time: newTime,
+            date: newDate,
+            venue: venue,
+            createdby: createdBy
+          })
+          .then(response => resolve(response))
+          .catch(err => reject(err))
       })
     },
     createAutographEvent: (athleteUserId, newTime, venue, newDate) => {
@@ -185,6 +216,13 @@ module.exports = {
                     .catch(err => console.log(err))
           })
           .then(result => {
+            return db('notifications')
+                    .select('*')
+                    .where('eventid', eventid)
+                    .del()
+                    .catch(err => console.log(err))
+          })
+          .then(result => {
             return db('competitionevents')
                     .select('*')
                     .where('eventid', eventid)
@@ -192,12 +230,11 @@ module.exports = {
                     .catch(err => console.log(err))
           })
           .then(result => resolve(result))
-          .catch(err => {
-            console.log(err)
-            return reject(err)
-          })
+          .catch(err => reject(err))
       })
     },
+    // Notification for autograph doesn't work because the eventid in the notification table is tied to a competition event 
+    // not a autograph event. 
     deleteAutographEvents: (eventid, userid) => {
       return new Promise((resolve, reject) => {
         db('autographevents')
@@ -206,6 +243,35 @@ module.exports = {
           .del()
           .then(result => resolve(result))
           .catch(err => reject(err))
+      })
+    },
+    editEvent: (updatedEvent) => {
+      return new Promise((resolve, reject) => {
+        return db('competitionevents')
+                .where('eventid', updatedEvent.eventid)
+                .select('*')
+                .update({
+                  sportname: updatedEvent.sportname,
+                  venue: updatedEvent.venue,
+                  time: updatedEvent.time,
+                  date: updatedEvent.date,
+                })
+                .then(result => {
+                  return db('registeredathletes')
+                          .select('*')
+                          .where('eventid', updatedEvent.eventid)
+                })
+                .then((athletes) => {
+                  const notifications = athletes.map(user => ({
+                    userid: user.userid,
+                    eventid: updatedEvent.eventid,
+                    body: "Your event was updated"
+                  }))
+                  return db('notifications')
+                          .insert(notifications)
+                })
+                .catch(err => console.log(err))
+
       })
     }
 }
