@@ -43,5 +43,26 @@ module.exports = {
                 athletes: data
             }))
             .catch(err => res.status(400).send({err}))
+    },
+    getRegisteredAthletes: (req, res, next) => {
+        const { eventid } = req.body
+        return userService.getRegisteredAthletes(eventid)
+            .then(result => res.status(200).send(result))
+            .catch(err => res.status(404).send(err))
+    },
+    getNotifications: (req, res, next) => {
+        const { userid } = req.body
+        return userService.getNotifications(userid)
+            .then(result => res.status(200).send(result))
+            .catch(err => {
+                console.log(err)
+                return res.status(404).send([])
+            })
+    },
+    deleteNotifications: (req, res, next) => {
+        const { id } = req.body
+        return userService.deleteNotifications(id)
+            .then(response => res.status(200).send(response))
+            .catch(err => res.status(400).send(err))
     }
 }

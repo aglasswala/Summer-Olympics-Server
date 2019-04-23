@@ -87,5 +87,36 @@ module.exports = {
               .then(users => resolve(users))
               .catch(err => reject(users))
         })
+    },
+    getRegisteredAthletes: (eventid) => {
+      return new Promise((resolve, reject) => {
+        db('registeredathletes')
+          .select('*')
+          .where('eventid', eventid)
+          .join('users', 'users.userid', '=', 'registeredathletes.userid')
+          .then(response => resolve(response))
+          .catch(err => reject(err))
+      })
+    },
+    getNotifications: (userid) => {
+      return new Promise((resolve, reject) => {
+        db('notifications')
+          .select('*')
+          .where('notifications.userid', userid)
+          .join('competitionevents', 'competitionevents.eventid', '=', 'notifications.eventid')
+          .then(notification => resolve(notification))
+          .catch(err => reject(err))
+      })
+    },
+    deleteNotifications: (id) => {
+      return new Promise((resolve, reject) => {
+        db
+          .select('*')
+          .from('notifications')
+          .where('notificationid', id)
+          .del()
+          .then(result => resolve(result))
+          .catch(err => reject(err))
+      })
     }
 }
