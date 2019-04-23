@@ -199,12 +199,13 @@ module.exports = {
     database,
     getUserTickets: (id) => {
         return new Promise((resolve, reject) => {
+
             db
             .select('*')
             .from('tickets')
             .join('competitionevents', 'competitionevents.eventid', '=', 'tickets.eventid')
-            .where('tickets.userid', id)
-            .returning('*')
+            .where('tickets.userid', '=', id)
+            .returning('competitionevents.sportname')
             .then(result => resolve(result))
             .catch(err => reject(err))
         })

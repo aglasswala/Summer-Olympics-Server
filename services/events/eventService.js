@@ -22,7 +22,7 @@ const combineFirstandLast = (events) => {
       venue: event.venue
     })
   })
-  return eachEvent
+  return eachEvent 
 }
 
 
