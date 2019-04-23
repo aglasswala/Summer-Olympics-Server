@@ -272,7 +272,6 @@ module.exports = {
                 })
                 .then(result => resolve(result))
                 .catch(err => reject(err))
-
       })
     }
 }
