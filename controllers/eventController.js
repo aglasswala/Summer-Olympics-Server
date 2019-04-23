@@ -171,6 +171,6 @@ module.exports = {
         const updatedEvent = updateEventTimesandDates(selectedEvent)
         return eventService.editEvent(updatedEvent)
             .then(result => res.status(200).send(result))
-            .catch(err => res.status(404).send(err))
+            .catch(err => res.statu(404).send(err))
     }
 }

@@ -247,7 +247,7 @@ module.exports = {
     },
     editEvent: (updatedEvent) => {
       return new Promise((resolve, reject) => {
-        return db('competitionevents')
+        db('competitionevents')
                 .where('eventid', updatedEvent.eventid)
                 .select('*')
                 .update({
@@ -270,7 +270,8 @@ module.exports = {
                   return db('notifications')
                           .insert(notifications)
                 })
-                .catch(err => console.log(err))
+                .then(result => resolve(result))
+                .catch(err => reject(err))
 
       })
     }
