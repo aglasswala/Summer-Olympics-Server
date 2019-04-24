@@ -21,6 +21,8 @@ create table autographevents (autographeventsid serial primary key, time time no
 create ticket table
 create table tickets(ticketid serial primary key, timestamp time not null, cost numeric not null, eventid serial references competitionevents(eventid), userid serial references users(userid));
 
+notifications
+create table notifications(notificationid serial primary key, userid serial references users(userid), eventid serial references competitionevents(eventid), body varChar(255) not null);
 
 
 INSERT!!!
