@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt');
-const uuid = require('uuid/v1');
 const knex = require('knex');
-const ticketService = require('../ticket/ticketService');
 
 const db = knex({
   client: 'pg',
@@ -29,8 +27,9 @@ module.exports = {
             .catch(err => reject(err));
         }
         return reject();
-      });
-  }).catch(err => reject(err)),
+      })
+      .catch(err => reject(err));
+  }),
   getUserById: userId => new Promise((resolve, reject) => {
     db.select('*')
       .where('userid', userId)
@@ -50,7 +49,6 @@ module.exports = {
     countryOfOrigin,
     password,
   ) => new Promise((resolve, reject) => {
-    const user = {};
     const hash = bcrypt.hashSync(password, 10);
     db.transaction((trx) => {
       trx
@@ -77,14 +75,15 @@ module.exports = {
         .then(data => resolve(data[0]))
         .then(trx.commit)
         .catch(trx.rollback);
-    });
+    })
+      .catch(err => reject(err));
   }),
   getAthletes: () => new Promise((resolve, reject) => {
     db.select('*')
       .from('users')
       .where('usertype', '=', 2)
       .then(users => resolve(users))
-      .catch(err => reject(users));
+      .catch(err => reject(err));
   }),
   getRegisteredAthletes: eventid => new Promise((resolve, reject) => {
     db('registeredathletes')

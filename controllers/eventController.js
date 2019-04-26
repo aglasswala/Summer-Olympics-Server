@@ -2,14 +2,14 @@ const eventService = require('../services/events/eventService');
 
 const compEventsArrayify = (response) => {
   const newData = [];
-  response.map(event => {
+  response.map(event => (
     newData.push([
       event.sportname,
       event.venue,
       event.time,
-      event.date
+      event.date,
     ])
-  })
+  ));
   return newData;
 };
 
@@ -17,10 +17,10 @@ const fixingDates = (event) => {
   const events = event;
   let type;
 
-  for (let b = 0; b < events.length; b++) {
-    let checktime = parseInt(events[b][2]);
+  for (let b = 0; b < events.length; b += 1) {
+    let checktime = parseInt(events[b][2], 10);
     if (checktime >= 12) {
-      if (checktime != 12) {
+      if (checktime !== 12) {
         checktime -= 12;
         events[b][2] = checktime.toString() + events[b][2].substring(2, 5);
       }
@@ -28,26 +28,27 @@ const fixingDates = (event) => {
     } else {
       type = ' AM';
     }
-    if (parseInt(events[b][2]) < 10 && type == ' AM') {
+    if (parseInt(events[b][2], 10) < 10 && type === ' AM') {
       events[b][2] = events[b][2].toString().substring(1, 5) + type;
     } else {
       events[b][2] = events[b][2].toString().substring(0, 5) + type;
     }
   }
 
-  for (let b = 0; b < events.length; b++) {
+  for (let b = 0; b < events.length; b += 1) {
     events[b][3] = new Date(events[b][3]).toString().substring(4, 15);
   }
   return events;
 };
 
 const fixingTime = (time) => {
-  let checktime = parseInt(time);
+  let checktime = parseInt(time, 10);
   if (checktime < 12 && time.includes('AM')) {
     return `${checktime}:00:00`;
   }
   if (checktime === 12) {
-    return (checktime = `${checktime.toString()}:00:00`);
+    checktime = `${checktime.toString()}:00:00`;
+    return checktime;
   }
   checktime += 12;
   checktime = `${checktime.toString()}:00:00`;
@@ -85,7 +86,7 @@ const updateEventTimesandDates = (selectedEvent) => {
 };
 
 module.exports = {
-  getAllEvents: (req, res, next) => eventService
+  getAllEvents: (req, res) => eventService
     .getAllEvents()
     .then((response) => {
       let compEvents = compEventsArrayify(response.compEvent);
@@ -105,7 +106,7 @@ module.exports = {
       return res.status(200).send(result);
     })
     .catch(err => res.status(404).send({ err })),
-  getAthleteEvents: (req, res, next) => {
+  getAthleteEvents: (req, res) => {
     const { id } = req.body;
     return eventService
       .getAthleteEvents(id)
@@ -117,19 +118,19 @@ module.exports = {
       })
       .catch(err => res.status(404).send(err));
   },
-  getCompEvents: (req, res, next) => eventService
+  getCompEvents: (req, res) => eventService
     .getCompEvents()
     .then(response => res.status(200).send(response))
-    .catch(err => res.status(404).send({ err: 'Not Found' })),
-  getCereEvents: (req, res, next) => eventService
+    .catch(err => res.status(404).send({ err })),
+  getCereEvents: (req, res) => eventService
     .getCereEvents()
     .then(response => res.status(200).send(response))
-    .catch(err => res.status(404).send({ err: 'Not Found' })),
-  getAutographEvents: (req, res, next) => eventService
+    .catch(err => res.status(404).send({ err })),
+  getAutographEvents: (req, res) => eventService
     .getAutographEvents()
     .then(response => res.status(200).send(response))
-    .catch(err => res.status(404).send({ err: 'Not Found' })),
-  createCompetitionEvent: (req, res, next) => {
+    .catch(err => res.status(404).send({ err })),
+  createCompetitionEvent: (req, res) => {
     const {
       sportname, newTime, venue, newDate, filteredRegisteredAthletes, createdBy,
     } = req.body;
@@ -145,9 +146,9 @@ module.exports = {
       .then(response => res.status(200).send({
         resp: response,
       }))
-      .catch(err => res.status(400).send({ err: 'ERRR' }));
+      .catch(err => res.status(400).send({ err }));
   },
-  createCeremonyEvent: (req, res, next) => {
+  createCeremonyEvent: (req, res) => {
     const {
       selectedEvent,
       firstPlace,
@@ -170,9 +171,9 @@ module.exports = {
         createdBy,
       )
       .then(response => res.status(200).send({ response }))
-      .catch(err => res.status(400).send({ err: 'failed to add' }));
+      .catch(err => res.status(400).send({ err }));
   },
-  createAutographEvent: (req, res, next) => {
+  createAutographEvent: (req, res) => {
     const {
       athleteUserId, newTime, venue, newDate,
     } = req.body;
@@ -181,21 +182,21 @@ module.exports = {
       .then(response => res.status(200).send(response))
       .catch(err => res.status(400).send({ err }));
   },
-  deleteEvent: (req, res, next) => {
-    const { eventid, userid } = req.body;
+  deleteEvent: (req, res) => {
+    const { eventid } = req.body;
     return eventService
-      .deleteEvent(eventid, userid)
+      .deleteEvent(eventid)
       .then(result => res.status(200).send({ result }))
       .catch(err => res.status(400).send(err));
   },
-  deleteAutographEvents: (req, res, next) => {
-    const { eventid, userid } = req.body;
+  deleteAutographEvents: (req, res) => {
+    const { eventid } = req.body;
     return eventService
-      .deleteAutographEvents(eventid, userid)
+      .deleteAutographEvents(eventid)
       .then(result => res.status(200).send({ result }))
       .catch(err => res.status(400).send(err));
   },
-  editEvent: (req, res, next) => {
+  editEvent: (req, res) => {
     const { selectedEvent } = req.body;
     const updatedEvent = updateEventTimesandDates(selectedEvent);
     return eventService

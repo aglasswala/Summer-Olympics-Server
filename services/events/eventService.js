@@ -1,6 +1,4 @@
 const knex = require('knex');
-const uuidv1 = require('uuid/v1');
-const ticketService = require('../ticket/ticketService');
 
 const db = knex({
   client: 'pg',
@@ -14,14 +12,14 @@ const db = knex({
 
 const combineFirstandLast = (events) => {
   const eachEvent = [];
-  events.map((event) => {
+  events.map(event => (
     eachEvent.push({
       sportname: `${event.fname} ${event.lname}`,
       time: event.time,
       date: event.date,
       venue: event.venue,
-    });
-  });
+    })
+  ));
   return eachEvent;
 };
 
@@ -82,9 +80,9 @@ module.exports = {
           .then((ceremonyEvents) => {
             allEvents.ceremonyEvents = ceremonyEvents;
             allEvents.result = result;
-            return allEvents;
+            return resolve(allEvents);
           })
-          .catch(err => console.log(err));
+          .catch(err => reject(err));
       })
       .then(result => resolve(result))
       .catch(err => reject(err));
@@ -184,6 +182,7 @@ module.exports = {
       .then(response => resolve(response))
       .catch(err => reject(err));
   }),
+  // eslint-disable-next-line
   createAutographEvent: (athleteUserId, newTime, venue, newDate) => new Promise((resolve, reject) => {
     db('autographevents')
       .insert({
@@ -195,37 +194,38 @@ module.exports = {
       .then(result => resolve(result))
       .catch(err => reject(err));
   }),
-  deleteEvent: (eventid, userid) => new Promise((resolve, reject) => {
+  deleteEvent: eventid => new Promise((resolve, reject) => {
     db('registeredathletes')
       .select('*')
       .where('eventid', eventid)
       .del()
-      .then(result => db('tickets')
+      .then(() => db('tickets')
         .select('*')
         .where('eventid', eventid)
         .del()
-        .catch(err => console.log(err)))
-      .then(result => db('ceremonyevents')
+        .catch(err => reject(err)))
+      .then(() => db('ceremonyevents')
         .select('*')
         .where('eventid', eventid)
         .del()
-        .catch(err => console.log(err)))
-      .then(result => db('notifications')
+        .catch(err => reject(err)))
+      .then(() => db('notifications')
         .select('*')
         .where('eventid', eventid)
         .del()
-        .catch(err => console.log(err)))
-      .then(result => db('competitionevents')
+        .catch(err => reject(err)))
+      .then(() => db('competitionevents')
         .select('*')
         .where('eventid', eventid)
         .del()
-        .catch(err => console.log(err)))
+        .catch(err => reject(err)))
       .then(result => resolve(result))
       .catch(err => reject(err));
   }),
-  // Notification for autograph doesn't work because the eventid in the notification table is tied to a competition event
+  // Notification for autograph doesn't work because the eventid in the
+  // notification table is tied to a competition event
   // not a autograph event.
-  deleteAutographEvents: (eventid, userid) => new Promise((resolve, reject) => {
+  deleteAutographEvents: eventid => new Promise((resolve, reject) => {
     db('autographevents')
       .select('*')
       .where('autographeventsid', eventid)
@@ -243,7 +243,7 @@ module.exports = {
         time: updatedEvent.time,
         date: updatedEvent.date,
       })
-      .then(result => db('registeredathletes')
+      .then(() => db('registeredathletes')
         .select('*')
         .where('eventid', updatedEvent.eventid))
       .then((athletes) => {

@@ -10,6 +10,7 @@ function startServer(server) {
   const { APP_PORT } = process.env;
 
   server.listen(APP_PORT || 3000, () => {
+    // eslint-disable-next-line no-console
     console.log(`Server is listening on ${APP_PORT}`);
   });
 }

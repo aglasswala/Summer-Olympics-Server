@@ -2,7 +2,7 @@ const userService = require('../services/users/userService');
 const auth = require('../auth/auth');
 
 module.exports = {
-  loginUser: (req, res, next) => {
+  loginUser: (req, res) => {
     const { email, password } = req.body;
     // Validate EMAIL and PASSWORD
     return userService
@@ -16,14 +16,14 @@ module.exports = {
       })
       .catch(err => res.status(404).send({ err }));
   },
-  getUserById: (req, res, next) => {
+  getUserById: (req, res) => {
     const { id } = req.body;
     return userService
       .getUserById(id)
       .then(response => res.status(200).send(response))
-      .catch(err => res.status(404).send('dasdf'));
+      .catch(err => res.status(404).send(err));
   },
-  registerUser: (req, res, next) => {
+  registerUser: (req, res) => {
     const {
       firstName,
       lastName,
@@ -59,27 +59,27 @@ module.exports = {
       })
       .catch(err => res.status(404).send(err));
   },
-  getAthletes: (req, res, next) => userService
+  getAthletes: (req, res) => userService
     .getAthletes()
     .then(data => res.status(200).send({
       athletes: data,
     }))
     .catch(err => res.status(400).send({ err })),
-  getRegisteredAthletes: (req, res, next) => {
+  getRegisteredAthletes: (req, res) => {
     const { eventid } = req.body;
     return userService
       .getRegisteredAthletes(eventid)
       .then(result => res.status(200).send(result))
       .catch(err => res.status(404).send(err));
   },
-  getNotifications: (req, res, next) => {
+  getNotifications: (req, res) => {
     const { userid } = req.body;
     return userService
       .getNotifications(userid)
       .then(result => res.status(200).send(result))
-      .catch((err) => res.status(404).send([]));
+      .catch(err => res.status(404).send([err]));
   },
-  deleteNotifications: (req, res, next) => {
+  deleteNotifications: (req, res) => {
     const { id } = req.body;
     return userService
       .deleteNotifications(id)
