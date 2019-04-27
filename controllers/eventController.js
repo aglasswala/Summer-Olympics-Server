@@ -202,6 +202,6 @@ module.exports = {
     return eventService
       .editEvent(updatedEvent)
       .then(result => res.status(200).send(result))
-      .catch(err => res.statu(404).send(err));
+      .catch(err => res.status(404).send(err));
   },
 };
