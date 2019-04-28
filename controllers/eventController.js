@@ -189,6 +189,13 @@ module.exports = {
       .then(result => res.status(200).send({ result }))
       .catch(err => res.status(400).send(err));
   },
+  deleteCeremonyEvents: (req, res) => {
+    const { eventid } = req.body;
+    return eventService
+      .deleteCeremonyEvents(eventid)
+      .then(result => res.status(200).send({ result }))
+      .catch(err => res.status(400).send(err));
+  },
   deleteAutographEvents: (req, res) => {
     const { eventid } = req.body;
     return eventService

@@ -16,6 +16,7 @@ module.exports = (router) => {
   router.get('/api/getAutographEvents', eventController.getAutographEvents);
 
   router.post('/api/deleteEvent', eventController.deleteEvent);
+  router.post('/api/deleteCeremonyEvents', eventController.deleteCeremonyEvents);
   router.post('/api/deleteAutographEvents', eventController.deleteAutographEvents);
 
   router.post('/api/createCompetitionEvent', eventController.createCompetitionEvent);
