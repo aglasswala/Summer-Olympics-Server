@@ -233,6 +233,16 @@ module.exports = {
       .then(result => resolve(result))
       .catch(err => reject(err));
   }),
+
+  deleteCeremonyEvents: eventid => new Promise((resolve, reject) => {
+    db('ceremonyevents')
+      .select('*')
+      .where('ceremonyid', eventid)
+      .del()
+      .then(result => resolve(result))
+      .catch(err => reject(err));
+  }),
+
   editEvent: updatedEvent => new Promise((resolve, reject) => {
     db('competitionevents')
       .where('eventid', updatedEvent.eventid)
