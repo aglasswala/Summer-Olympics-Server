@@ -31,7 +31,7 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "lint-fix": "prettier-eslint '**/*.js' --write",
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC"
