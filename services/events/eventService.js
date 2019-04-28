@@ -94,10 +94,11 @@ module.exports = {
       .catch(err => reject(err));
   }),
   getCereEvents: () => new Promise((resolve, reject) => {
-    db.select('*')
-      .from('ceremonyevents')
-      .then(result => resolve(result))
-      .catch(err => reject(err));
+    db('ceremonyevents')
+    .select('ceremonyid','competitionevents.sportname','ceremonyevents.time','ceremonyevents.date','ceremonyevents.venue') 
+    .join('competitionevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+    .then(result => resolve(result))
+    .catch(err => reject(err));
   }),
   getAutographEvents: () => new Promise((resolve, reject) => {
     db('autographevents')

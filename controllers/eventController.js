@@ -191,7 +191,6 @@ module.exports = {
   },
   deleteCeremonyEvents: (req, res) => {
     const { eventid } = req.body;
-    console.log(eventid)
     return eventService
       .deleteCeremonyEvents(eventid)
       .then(result => res.status(200).send({ result }))
