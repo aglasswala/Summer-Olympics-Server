@@ -102,11 +102,13 @@ module.exports = {
       .catch(err => reject(err));
   }),
   deleteNotifications: id => new Promise((resolve, reject) => {
-    db.select('*')
-      .from('notifications')
+    db('notifications')
+      .select('*')
       .where('notificationid', id)
       .del()
       .then(result => resolve(result))
-      .catch(err => reject(err));
+      .catch(err => {
+        console.log(err)
+      });
   }),
 };
