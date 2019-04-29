@@ -29,6 +29,7 @@ module.exports = (router) => {
   router.post('/api/login', userController.loginUser);
   router.post('/api/getUser', userController.getUserById);
   router.post('/api/register', userController.registerUser);
+  router.post('/api/updateProfile', userController.updateProfile)
 
   // Get Athletes
   router.get('/api/getAthletes', userController.getAthletes);
