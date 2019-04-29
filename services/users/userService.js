@@ -111,4 +111,24 @@ module.exports = {
         console.log(err)
       });
   }),
+  updateProfile: (userid, firstname, lastname, city, street, state, zip, phonenumber, email, countryoforigin) => {
+    return new Promise((resolve, reject) => {
+      db('users')
+        .select('*')
+        .where('userid', userid)
+        .update({
+          fname: firstname,
+          lname: lastname,
+          street: street,
+          city: city,
+          state: state,
+          zip: zip,
+          email: email,
+          phonenumber: phonenumber,
+          countryoforigin: countryoforigin
+        })
+        .then(result => resolve(result))
+        .catch(err => reject(err))
+    })
+  }
 };
