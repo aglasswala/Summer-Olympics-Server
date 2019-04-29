@@ -5,6 +5,7 @@ module.exports = {
   loginUser: (req, res) => {
     const { email, password } = req.body;
     // Validate EMAIL and PASSWORD
+    console.log(email, "email" + "password: ", password)
     return userService
       .getUser(email, password)
       .then((user) => {
@@ -14,7 +15,7 @@ module.exports = {
           user,
         });
       })
-      .catch(err => res.status(404).send({ err }));
+      .catch(err => res.status(404).send({ err: "THIS IS WHERE IT" }));
   },
   getUserById: (req, res) => {
     const { id } = req.body;
