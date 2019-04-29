@@ -5,12 +5,11 @@ module.exports = {
   loginUser: (req, res) => {
     const { email, password } = req.body;
     // Validate EMAIL and PASSWORD
-    console.log(email, "email" + "password: ", password)
     return userService
       .getUser(email, password)
       .then((user) => {
-        console.log(user)
         const data = auth.createJwt(user.userid);
+        console.log(data)
         return res.status(200).send({
           userToken: data,
           user,
