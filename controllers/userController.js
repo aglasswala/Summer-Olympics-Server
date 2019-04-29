@@ -9,6 +9,7 @@ module.exports = {
     return userService
       .getUser(email, password)
       .then((user) => {
+        console.log(user)
         const data = auth.createJwt(user.userid);
         return res.status(200).send({
           userToken: data,
