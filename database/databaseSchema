@@ -41,6 +41,6 @@ notifications
 
 create table notifications(notificationid serial primary key, userid serial references users(userid), eventid serial references competitionevents(eventid), body varChar(255) not null);
 
-alter column for country of origin
+alter column for country of origin;
 
 alter table users alter column countryoforigin type varChar(255);
