@@ -87,4 +87,10 @@ module.exports = {
       .then(response => res.status(200).send({response}))
       .catch(err => res.status(400).send(err));
   },
+  updateProfile: (req, res) => {
+    const { userid, firstname, lastname, city, street, state, zip, phonenumber, email, countryoforigin } = req.body
+    return userService.updateProfile(userid, firstname, lastname, city, street, state, zip, phonenumber, email, countryoforigin)
+      .then(result => res.status(200).send({ result }))
+      .catch(err => res.status(400).send(err))
+  }
 };

@@ -1,5 +1,16 @@
 const eventService = require('../services/events/eventService');
 
+formatTime = time => {
+  const date = new Date("February 04, 2011 " + time);
+  const options = {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  };
+  const timeString = date.toLocaleString('en-US', options);
+  return timeString
+}
+
 const compEventsArrayify = (response) => {
   const newData = [];
   response.map(event => (
@@ -11,6 +22,18 @@ const compEventsArrayify = (response) => {
     ])
   ));
   return newData;
+};
+const compEventsArrayify2 = (response) => {
+  let newData = []
+  for(let i = 0; i < response.length; i++) {
+      newData.push([
+          response[i].sportname,
+          response[i].venue,
+          formatTime(response[i].time),
+          new Date(response[i].date).toString().substring(4,15)
+      ])
+  }
+  return newData
 };
 
 const fixingDates = (event) => {
@@ -112,8 +135,8 @@ module.exports = {
       .getAthleteEvents(id)
       .then((response) => {
         const allEvents = {};
-        allEvents.ceremonyEvents = compEventsArrayify(response.ceremonyEvents);
-        allEvents.response = compEventsArrayify(response.result);
+        allEvents.ceremonyEvents = compEventsArrayify2(response.ceremonyEvents);
+        allEvents.response = compEventsArrayify2(response.result);
         return res.status(200).send(allEvents);
       })
       .catch(err => res.status(404).send(err));

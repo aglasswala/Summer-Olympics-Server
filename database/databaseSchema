@@ -39,8 +39,6 @@ insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019
 ALTER!
 
 
-
-
 This is to alter the tables becauuse we fixed or changed something..
 alter table competitionevents alter column venue type varChar(255);
 alter table ceremonyEvents alter column venue type varChar(255);
