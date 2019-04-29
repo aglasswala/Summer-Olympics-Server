@@ -1,46 +1,46 @@
+These are the actual Tables you will need to have in your database!!!
+
 Login Table
-//
 create table login(loginid serial primary key, hash varChar(100) not null, email text unique not null);
 
 Users table 
-//
-CREATE TABLE Users (userId serial PRIMARY KEY, FName varChar(20) not null, LName varChar(20) not null, Street varChar(255) not null, city varChar(20) not null, state char(2) not null, zip char(5) not null, email varChar(30) not null, phoneNumber char(10) not null, countryOfOrigin varChar(20) not null, userType int not null);
+CREATE TABLE Users (userId serial PRIMARY KEY, FName varChar(20) not null, LName varChar(20) not null, Street varChar(255) not null, city varChar(20) not null, state char(2) not null, zip char(5) not null, email varChar(30) not null, phoneNumber char(10) not null, countryOfOrigin varChar(255) not null, userType int not null);
 
 competitionEvents
-//
 create table competitionEvents(eventId serial primary key not null, sportName varChar(20) not null, time time not null, date date not null, venue varChar(20) not null, userid serial references users(userid));
 
 ceremonyEvents
-//
 create table ceremonyevents(ceremonyid serial primary key not null, eventid serial references competitionevents(eventid), firstplace serial references users(userid), secondplace serial references users(userid), thirdplace serial references users(userid), time time not null, date date not null, venue varChar(20) not null, createdBy serial references users(userid));
 
-ceremonyevents users 
-
-insert into ceremonyevents(eventid, firstplace, secondplace, thirdplace, time, date, venue, createdby) values ('2', '8', '9', '11', '12:00', '2019-04-10', 'Carioca Arena 3', '10');
-
 registeredathletes table 
-
 create table registeredathletes(registeredathletesid serial primary key, eventid serial references competitionevents(eventid), userid serial references users(userid));
 
 autographevents table 
-
 create table autographevents (autographeventsid serial primary key, time time not null, userid serial references users(userid), date date not null, venue varChar(20) not null);
 
-insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019-05-10', 'Carioca Area 3');
-
-
-alter compeitionevents table
-
-alter table competitionevents alter column venue type varChar(255); // do the same with ceremony events and autograph
-
-// create ticket table
-
+create ticket table
 create table tickets(ticketid serial primary key, timestamp time not null, cost numeric not null, eventid serial references competitionevents(eventid), userid serial references users(userid));
 
 notifications
-
 create table notifications(notificationid serial primary key, userid serial references users(userid), eventid serial references competitionevents(eventid), body varChar(255) not null);
 
-alter column for country of origin;
 
+INSERT!!!
+
+
+
+You can insert these if you would like(These are just for testing purposes):
+insert into ceremonyevents(eventid, firstplace, secondplace, thirdplace, time, date, venue, createdby) values ('2', '8', '9', '11', '12:00', '2019-04-10', 'Carioca Arena 3', '10');
+insert into autographevents(time, userid, date, venue) values ('9:00', 11, '2019-05-10', 'Carioca Area 3');
+
+
+
+
+ALTER!
+
+
+This is to alter the tables becauuse we fixed or changed something..
+alter table competitionevents alter column venue type varChar(255);
+alter table ceremonyEvents alter column venue type varChar(255);
+alter table autographevents alter column venue type varChar(255);
 alter table users alter column countryoforigin type varChar(255);
