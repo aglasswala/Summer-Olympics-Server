@@ -68,7 +68,7 @@ module.exports = {
             email: loginEmail[0],
             phonenumber: phoneNumber,
             countryoforigin: countryOfOrigin,
-            usertype: 2,
+            usertype: 1,
           }))
         .then(data => resolve(data[0]))
         .then(trx.commit)
