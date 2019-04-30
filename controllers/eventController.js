@@ -108,6 +108,24 @@ const updateEventTimesandDates = (selectedEvent) => {
   return updatedEvent;
 };
 
+const replaceUseridwithFirstandLastName = (allEvents) => {
+  let events = []
+  allEvents.cereEvents.map(event => {
+    events.push([
+      event.sportname,
+      idToName(event.firstplace, allEvents.users),
+      idToName(event.secondplace, allEvents.users),
+      idToName(event.thirdplace, allEvents.users),
+    ])
+  })
+  return events
+}
+
+const idToName = (id, users) => {
+  const newId = users.filter(user => user.userid === id)
+  return newId[0].fname + " " + newId[0].lname
+}
+
 module.exports = {
   getAllEvents: (req, res) => eventService
     .getAllEvents()
@@ -149,6 +167,12 @@ module.exports = {
     .getCereEvents()
     .then(response => res.status(200).send(response))
     .catch(err => res.status(404).send({ err })),
+  getMedalists: (req, res) => eventService
+    .getMedalists()
+    .then(response => res.status(200).send({response}))
+    .catch(err => {
+      return res.status(404).send(err)
+    }),
   getAutographEvents: (req, res) => eventService
     .getAutographEvents()
     .then(response => res.status(200).send(response))
