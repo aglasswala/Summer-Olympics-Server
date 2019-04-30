@@ -98,6 +98,23 @@ module.exports = {
     .then(result => resolve(result))
     .catch(err => reject(err));
   }),
+  getMedalists: () => new Promise((resolve, reject) => {
+    let allAthletes = {}
+    db('ceremonyevents')
+      .select('competitionevents.sportname', 'ceremonyevents.firstplace', 'ceremonyevents.secondplace', 'ceremonyevents.thirdplace', 'ceremonyevents.time')
+      .join('competitionevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
+      .then(result => {
+        allAthletes.cereEvents = result
+        return db('users').select('fname', 'lname', 'userid')
+      })
+      .then(users => {
+        allAthletes.users = users
+        return resolve(allAthletes)
+      })
+      .catch(err => {
+        return reject(err)
+      })
+  }),
   getAutographEvents: () => new Promise((resolve, reject) => {
     db('autographevents')
       .select('*')
