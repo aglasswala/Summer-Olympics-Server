@@ -13,7 +13,7 @@ module.exports = (router) => {
   router.get('/api/events', eventController.getAllEvents);
   router.get('/api/getCompEvents', eventController.getCompEvents);
   router.get('/api/getCereEvents', eventController.getCereEvents);
-  router.get('/api/getMedalists', eventController.getMedalists);
+  router.get('/api/getAllMedalists', eventController.getMedalists);
   router.get('/api/getAutographEvents', eventController.getAutographEvents);
 
   router.post('/api/deleteEvent', eventController.deleteEvent);

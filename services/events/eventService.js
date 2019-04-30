@@ -103,7 +103,7 @@ module.exports = {
   getMedalists: () => new Promise((resolve, reject) => {
     let allAthletes = {}
     db('ceremonyevents')
-      .select('competitionevents.sportname', 'ceremonyevents.firstplace', 'ceremonyevents.secondplace', 'ceremonyevents.thirdplace')
+      .select('competitionevents.sportname', 'ceremonyevents.firstplace', 'ceremonyevents.secondplace', 'ceremonyevents.thirdplace', 'ceremonyevents.time')
       .join('competitionevents', 'competitionevents.eventid', '=', 'ceremonyevents.eventid')
       .then(result => {
         allAthletes.cereEvents = result

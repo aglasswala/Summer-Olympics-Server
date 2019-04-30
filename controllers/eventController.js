@@ -116,6 +116,7 @@ const replaceUseridwithFirstandLastName = (allEvents) => {
       idToName(event.firstplace, allEvents.users),
       idToName(event.secondplace, allEvents.users),
       idToName(event.thirdplace, allEvents.users),
+      formatTime(event.time)
     ])
   })
   return events
@@ -169,7 +170,10 @@ module.exports = {
     .catch(err => res.status(404).send({ err })),
   getMedalists: (req, res) => eventService
     .getMedalists()
-    .then(response => res.status(200).send({response}))
+    .then(response => {
+      const events = replaceUseridwithFirstandLastName(response)
+      return res.status(200).send(events)
+    })
     .catch(err => {
       return res.status(404).send(err)
     }),
